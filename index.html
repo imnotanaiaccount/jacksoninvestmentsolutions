@@ -71,6 +71,42 @@
             /* No initial gap here, controlled by JS/expanded state */
         }
 
+        .fancy-text {
+              background: linear-gradient(to right, #ff6ec4, #7873f5);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              font-weight: bold;
+            }
+
+        .shiny-text {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  color: #fff;
+  background: #111;
+}
+
+.shiny-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+  transform: skewX(-20deg);
+}
+
+.shiny-text:hover::before {
+  animation: shine 1.2s ease-out forwards;
+}
+
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
+}
+
         .fab-button { /* Renamed from .float-btn */
             width: 56px; /* Slightly larger for better tap target */
             height: 56px; /* Slightly larger for better tap target */
@@ -999,7 +1035,7 @@
        <section id="home" class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <h1>Sell or Buy a Home Your Way</h1>
+                    <h1 class="fancy-text">Sell or Buy a Home Your Way</h1>
                     <p class="hero-subtitle">Cash offers, Realtor® listings, Financing</p>
                     <div class="cta-group">
                         <a href="#contact" class="cta-btn cta-primary">Sell My Home</a>
