@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jackson Investment Solutions - Your Partner for Buying & Selling Homes in Grand Rapids</title>
+    <meta name="description" content="Looking to buy or sell a home in Grand Rapids? Jackson Investment Solutions offers cash offers for sellers, expert Realtor® listings, and personalized home financing solutions for buyers.">
+    <link rel="icon" type="image/png" href="/path/to/your/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- CSS Variables: Comprehensive Brand Color Palette --- */
+        :root {
+            --primary-blue: #006EDC; /* A richer, slightly deeper blue */
+            --primary-blue-hover: #005BBF; /* Slightly darker for hover */
+            --secondary-accent: #3B82A6; /* Muted Teal for secondary accents */
+
+            --bg-light: #F9FAFB; /* Very light background for sections */
+            --bg-subtle: #E5E7EB; /* Light gray for subtle elements/borders */
+            --bg-dark: #1F2937; /* Dark background, replacing pure black */
+
+            --text-dark: #1F2937; /* Soft black for main headings/text */
+            --text-light-gray: #6B7280; /* Medium-dark gray for body text/subtitles */
+            --text-on-dark: #F3F4F6; /* Off-white for text on dark backgrounds */
+            --text-muted-on-dark: #9CA3AF; /* Muted text on dark backgrounds */
+
+            --border-light: #D1D5DB; /* Light border color */
+            --border-dark-input: #4B5563; /* Darker border for inputs on dark bg */
+
+            --star-yellow: #FACC15; /* Brighter yellow for stars */
+            --success-green: #22C55E; /* Vibrant green for success */
+            --error-red: #EF4444; /* Clear red for error */
+
+            /* General Spacing Units (optional, for consistency) */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+        }
+
+        /* --- Base styles inspired by Apple's design language --- */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-subtle) 100%); /* Subtle gradient for alive feel */
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh; /* Ensure gradient covers full viewport */
+        }
+
+        /* Consistent container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg); /* Using space variable */
+        }
+
+        /* --- Floating Action Buttons (FAB): Collapsible & Animated --- */
+        .fab-container { /* Renamed from .floating-cta */
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            /* No initial gap here, controlled by JS/expanded state */
+        }
+
+        .fab-button { /* Renamed from .float-btn */
+            width: 56px; /* Slightly larger for better tap target */
+            height: 56px; /* Slightly larger for better tap target */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            background-color: var(--primary-blue);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none; /* Ensure no default button border */
+            outline: none; /* Remove outline for a cleaner look, use focus style if needed */
+            font-size: 24px; /* Adjust icon size */
+            cursor: pointer;
+        }
+
+        .fab-button:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        }
+
+        /* Styles for the main toggle button */
+        .fab-toggle-btn { /* Specific class for the plus button */
+            margin-top: 0; /* No margin on initial button */
+            position: relative; /* For the icon rotation */
+            z-index: 2; /* Keep it above other buttons during collapse/expand */
+        }
+
+        .fab-toggle-btn i {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Rotate plus icon to X when expanded */
+        .fab-container.expanded .fab-toggle-btn i {
+            transform: rotate(45deg);
+        }
+
+        .fab-actions-group { /* New container for the action buttons */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+
+            /* Initially hidden and collapsed */
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8); /* Start slightly below and smaller */
+            transition: all 0.3s ease-in-out;
+            pointer-events: none; /* Prevent clicks on hidden elements */
+        }
+
+        .fab-container.expanded .fab-actions-group {
+            max-height: 300px; /* Large enough to show all buttons */
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto; /* Allow clicks when expanded */
+        }
+
+        .fab-action-btn { /* Specific class for individual action buttons */
+            margin-top: 10px; /* Space between action buttons when expanded */
+            opacity: 0; /* Start hidden */
+            visibility: hidden; /* Hide completely when collapsed */
+            transform: scale(0); /* Start scaled down */
+        }
+
+        /* When expanded, show them */
+        .fab-container.expanded .fab-action-btn {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Header: Translucent and clean */
+        header {
+            background: rgba(255, 255, 255, 0.70); /* Slightly less translucent */
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: var(--space-sm) 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.2rem; /* Slightly larger */
+            font-weight: 800; /* Bolder */
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-xl); /* Increased gap for clarity */
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Hero Section: Big, bold typography on a clean background */
+        .hero {
+            background-color: #ffffff; /* Explicitly white for this section */
+            padding: 160px 0 100px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            margin-bottom: var(--space-xl);
+        }
+
+        .hero h1 {
+            font-size: clamp(3.2rem, 5.8vw, 5rem); /* Slightly larger clamp range */
+            font-weight: 600; /* Even bolder */
+            line-height: 1.1;
+            letter-spacing: -0.04em; /* Tighter letter spacing */
+            color: var(--text-dark);
+            margin-top: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.0rem, 2vw, 2rem); /* Slightly adjusted font size */
+            margin-top: calc(var(--space-xl) * 1.5);
+            margin-bottom: calc(var(--space-xl) * 1.5); /* Slightly more space */
+            color: var(--text-light-gray);
+            max-width: 800px; /* Increased max width slightly */
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6; /* Improved line height */
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin-top: calc(var(--space-xl) * 1.5); /* More space after buttons */
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            background: var(--bg-subtle); /* Consistent light gray background */
+            padding: 0.7rem 1.4rem; /* Slightly larger padding */
+            border-radius: 30px; /* More rounded */
+            font-weight: 600; /* Bolder text */
+            font-size: 0.95rem; /* Slightly larger font */
+            color: var(--text-dark);
+            border: 1px solid var(--border-light); /* Consistent border */
+        }
+
+        /* CTA Buttons: Apple-style buttons */
+        .cta-group {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            margin: var(--space-xl) 0;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1.1rem 2.8rem; /* Increased padding for more presence */
+            font-weight: 500; /* Bolder text */
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem; /* Slightly larger icon gap */
+            border: 1px solid transparent;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Softer text shadow */
+        }
+
+        .cta-primary {
+            font-size: 1.10rem;
+            background-color: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Initial shadow */
+        }
+
+        .cta-primary:hover {
+            background-color: var(--primary-blue-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 113, 227, 0.35); /* Stronger hover shadow */
+        }
+        .cta-primary:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        .cta-secondary {
+
+            font-size: 0.95rem;
+            background-color: transparent; /* Changed */
+            color: var(--primary-blue); /* Changed */
+            border: 1px solid var(--primary-blue); /* Clearer border */
+            box-shadow: none; /* No initial shadow */
+        }
+
+        .cta-secondary:hover {
+            background-color: var(--primary-blue); /* Fill on hover */
+            color: white; /* Text color on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 113, 227, 0.35); /* Stronger hover shadow */
+        }
+        .cta-secondary:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        /* Lead Form Section: Premium dark section */
+        .lead-form-section {
+            background-color: var(--bg-dark); /* Using new dark background variable */
+            padding: 120px 0;
+            color: var(--text-on-dark); /* Text color on dark background */
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-container {
+            max-width: 700px; /* Slightly wider form */
+            margin: 0 auto;
+        }
+
+        .form-title {
+            font-size: 3rem; /* Slightly larger */
+            font-weight: 800; /* Bolder */
+            text-align: center;
+            margin-bottom: var(--space-sm);
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            font-size: 1.25rem; /* Slightly larger */
+            margin-bottom: var(--space-xl);
+            color: var(--text-muted-on-dark); /* Muted text for subtitle */
+        }
+
+        .lead-form {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            position: relative; /* For error messages */
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-muted-on-dark);
+            margin-bottom: var(--space-xs);
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1.1rem; /* Slightly more padding */
+            border: 1px solid var(--border-dark-input);
+            border-radius: 12px;
+            font-size: 1.05rem; /* Slightly larger font */
+            background-color: var(--text-dark); /* Darker input background */
+            color: var(--text-on-dark);
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.45); /* Stronger focus shadow */
+        }
+
+        .form-group .error-message {
+            color: var(--error-red);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            position: absolute;
+            bottom: -1.5rem; /* Position below input */
+            left: 0;
+            display: none; /* Hidden by default */
+        }
+        .form-group.has-error .error-message {
+            display: block;
+        }
+        .form-group.has-error input,
+        .form-group.has-error select,
+        .form-group.has-error textarea {
+            border-color: var(--error-red);
+        }
+
+
+        .submit-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 1.25rem 2.2rem; /* Increased padding */
+            border: none;
+            border-radius: 50px;
+            font-size: 1.15rem; /* Slightly larger font */
+            font-weight: 700; /* Bolder text */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: var(--space-md);
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Initial shadow */
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-blue-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 113, 227, 0.4); /* Stronger hover shadow */
+        }
+        .submit-btn:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Process & Benefits Sections: Clean, card-based layout */
+        .process, .benefits, .testimonials, #why-us, #compare-options, .lead-magnet-section, #financing-options { /* Added .lead-magnet-section and #financing-options */
+            padding: 120px 0; /* Consistent vertical padding */
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3.2rem; /* Larger */
+            font-weight: 800; /* Bolder */
+            letter-spacing: -0.03em;
+            margin-bottom: var(--space-md);
+            color: var(--text-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.4rem; /* Larger */
+            margin-bottom: 5.5rem; /* More space */
+            color: var(--text-light-gray);
+            max-width: 650px; /* Slightly wider */
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7; /* Improved line height */
+        }
+
+        .process-steps, .benefits-grid, .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); /* Slightly wider min width */
+            gap: var(--space-lg); /* More gap */
+        }
+
+        .step, .benefit, .testimonial {
+            background: white;
+            padding: 2.8rem; /* More padding */
+            border-radius: 20px; /* Consistent rounded corners */
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid var(--border-light);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Softer initial shadow */
+        }
+
+        .step:hover, .benefit:hover, .testimonial:hover {
+            transform: translateY(-8px); /* Softer lift */
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* More pronounced hover shadow */
+            border-color: transparent; /* No border on hover */
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px; /* Slightly larger number bubble */
+            height: 55px;
+            background-color: var(--primary-blue);
+            color: white;
+            font-size: 1.6rem;
+            font-weight: 700;
+            border-radius: 50%;
+            margin-bottom: var(--space-md);
+            box-shadow: 0 4px 10px rgba(0, 110, 220, 0.2); /* Shadow for the number */
+        }
+
+        .step h3, .benefit h3 {
+            font-size: 1.6rem; /* Larger heading */
+            font-weight: 700; /* Bolder */
+            margin-bottom: var(--space-sm);
+            color: var(--text-dark);
+        }
+
+        .step p, .benefit p {
+            color: var(--text-light-gray);
+            line-height: 1.7; /* Improved line height */
+            font-size: 1.05rem; /* Slightly larger body text */
+        }
+
+        .benefits {
+            background-color: #ffffff; /* Explicitly white for this section */
+        }
+
+        .benefit-icon {
+            color: var(--secondary-accent); /* Using secondary accent color for icons */
+            margin-bottom: var(--space-md);
+            width: 55px; /* Larger icon size */
+            height: 55px;
+            display: inline-block; /* To center SVG properly */
+            stroke-width: 1.8; /* Thinner stroke for icons */
+        }
+
+        .benefit ul {
+            list-style: none;
+            padding: 0;
+            margin-top: var(--space-sm);
+            text-align: left;
+        }
+
+        .benefit ul li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .benefit ul li svg {
+            margin-right: 0.75rem;
+            color: var(--primary-blue); /* Checkmark color */
+            min-width: 20px;
+        }
+
+        /* Testimonials: Focus on quote styling */
+        .testimonial-grid {
+             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+
+        .testimonial-text {
+            font-size: 1.18rem; /* Slightly larger */
+            line-height: 1.8; /* More comfortable line height */
+            margin-bottom: var(--space-md);
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1rem; /* Slightly larger */
+        }
+
+        .star-rating {
+            color: var(--star-yellow);
+            margin-bottom: var(--space-sm);
+            font-size: 1.4rem; /* Larger stars */
+        }
+
+        /* Optional: Testimonial image */
+        .testimonial-author-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto var(--space-sm); /* Centered and space below */
+            border: 2px solid var(--border-light);
+            display: block; /* To apply margin auto */
+        }
+
+        /* Footer: Simple and clean dark footer */
+        footer {
+            background: var(--bg-dark); /* Using new dark background variable */
+            color: var(--text-muted-on-dark);
+            padding: 5rem 0 3rem;
+            text-align: left;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Slightly wider min column */
+            gap: var(--space-xl);
+            margin-bottom: 4rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: var(--space-md);
+            color: var(--text-on-dark); /* Text color on dark background */
+            font-weight: 600;
+            font-size: 1.05rem; /* Slightly larger */
+        }
+
+        .footer-section p {
+            line-height: 1.6;
+        }
+
+        .footer-section a {
+            color: var(--text-muted-on-dark);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--text-on-dark);
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: flex-start; /* Align left */
+        }
+
+        .footer-social-links a {
+            color: var(--text-on-dark);
+            font-size: 1.5rem; /* Larger icons */
+            transition: color 0.3s ease;
+        }
+
+        .footer-social-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-dark-input);
+            padding-top: var(--space-xl);
+            margin-top: var(--space-xl);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Message Modal */
+        .message-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6); /* Slightly darker overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .message-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message-modal-content {
+            background: white;
+            padding: var(--space-xl);
+            border-radius: 16px;
+            text-align: center;
+            max-width: 450px; /* Slightly wider */
+            width: 90%;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Springier animation */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* More prominent shadow */
+        }
+
+        .message-modal.visible .message-modal-content {
+            transform: scale(1);
+        }
+
+        .message-modal h2 {
+            font-size: 1.8rem; /* Larger */
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            color: var(--text-dark);
+        }
+
+        .modal-icon {
+            font-size: 2.5rem; /* Larger icon */
+            line-height: 1;
+            display: inline-block; /* Ensure proper rendering for SVG */
+        }
+
+        .modal-icon.success {
+            color: var(--success-green);
+        }
+        .modal-icon.error {
+            color: var(--error-red);
+        }
+
+        .message-modal p {
+            color: var(--text-light-gray);
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .message-modal-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: var(--space-lg);
+        }
+
+        .message-modal-btn:hover {
+            background-color: var(--primary-blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 113, 227, 0.2);
+        }
+
+        /* Styles for the lead magnet specific form and modal */
+        .lead-magnet-form {
+            max-width: 500px; /* Adjust width as needed */
+            margin: 0 auto;
+            background: white;
+            padding: var(--space-lg);
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: left; /* Align text within form groups */
+        }
+
+        .lead-magnet-form .form-group label {
+            color: var(--text-dark); /* Darker label for light background */
+        }
+
+        .lead-magnet-form .form-group input {
+            background-color: var(--bg-light); /* Lighter input background */
+            border-color: var(--border-light); /* Lighter border */
+            color: var(--text-dark); /* Darker text */
+        }
+
+        .lead-magnet-form .submit-btn {
+            background-color: var(--primary-blue); /* Use primary blue for guide button */
+        }
+
+        .lead-magnet-form .submit-btn:hover {
+            background-color: var(--primary-blue-hover); /* Darker on hover */
+        }
+
+        /* Mobile Navigation Menu */
+        .hamburger-btn {
+            display: none; /* Hidden by default */
+            z-index: 1001;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
+            padding: 0.5rem;
+        }
+
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 245, 247, 0.98);
+            backdrop-filter: blur(15px); /* Slightly more blur */
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease, visibility 0.4s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .mobile-nav-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .mobile-nav-links li {
+            margin: 2rem 0;
+        }
+
+        .mobile-nav-links a {
+            font-size: 2.2rem; /* Larger on mobile */
+            font-weight: 700; /* Bolder */
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .mobile-nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2.8rem; /* Larger close button */
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* Scroll Animation */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1); /* Slower, smoother animation */
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger-btn {
+                display: block; /* Show on mobile */
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 120px 0 80px; /* Reduced padding on mobile */
+            }
+            .hero h1 {
+                font-size: clamp(2.4rem, 8vw, 3.5rem); /* Adjust hero heading size */
+            }
+            .hero-subtitle {
+                font-size: 1.00rem;
+            }
+            .section-title {
+                font-size: 2.2rem; /* Smaller titles on mobile */
+            }
+            .section-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 3rem;
+            }
+            .step, .benefit, .testimonial {
+                padding: 2rem; /* Reduced card padding */
+            }
+            .footer-content {
+                grid-template-columns: 1fr; /* Stack footer columns */
+                text-align: center;
+            }
+            .footer-section h3 {
+                margin-top: 1.5rem;
+            }
+            /* Adjusted FAB positioning for smaller screens */
+            .fab-container {
+                bottom: 20px;
+                right: 20px;
+            }
+            .footer-social-links {
+                justify-content: center; /* Center social links on mobile */
+            }
+        }
+    </style>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOURGA4ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YOURGA4ID'); // Replace with your GA4 Measurement ID
+
+        // Track form submission as a custom event in GA4
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainForm = document.querySelector('form[name="property-inquiry"]');
+            if (mainForm) {
+                mainForm.addEventListener('submit', (event) => {
+                    gtag('event', 'lead_form_submit', {
+                        'event_category': 'form',
+                        'event_label': 'Property Inquiry Form',
+                        'value': 1
+                    });
+                });
+            }
+
+            const guideForm = document.querySelector('form[name="guide-download"]');
+            if (guideForm) {
+                guideForm.addEventListener('submit', (event) => {
+                    gtag('event', 'guide_download_submit', {
+                        'event_category': 'lead_magnet',
+                        'event_label': 'Seller Guide Download',
+                        'value': 1
+                    });
+                });
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "YOUR_CLARITY_PROJECT_ID"); // Replace with your Clarity Project ID
+    </script>
+
+</head>
+<body>
+
+    <div id="messageModal" class="message-modal">
+        <div class="message-modal-content">
+            <h2 id="modalTitle">
+                <span id="modalIcon" class="modal-icon"></span>
+                <span id="modalTitleText"></span>
+            </h2>
+            <p id="modalMessage"></p>
+            <button id="modalCloseBtn" class="message-modal-btn">Done</button>
+        </div>
+    </div>
+
+    <div id="guideModal" class="message-modal">
+        <div class="message-modal-content">
+            <h2 id="guideModalTitle">
+                <span id="guideModalIcon" class="modal-icon success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                </span>
+                <span id="guideModalTitleText">Thank You! Your Guide is Ready</span>
+            </h2>
+            <p id="guideModalMessage">Your download of "The Grand Rapids Home Seller's Guide" should begin shortly. If it doesn't, <a href="/grand-rapids-seller-guide.pdf" target="_blank" class="cta-btn cta-primary" style="display: inline-flex; margin-top: 1rem;">Click to Download Now</a>.</p>
+            <button id="guideModalCloseBtn" class="message-modal-btn">Done</button>
+        </div>
+    </div>
+
+    <div id="mobileNav" class="mobile-nav-overlay">
+        <button id="closeBtn" class="close-btn" aria-label="Close navigation menu">&times;</button>
+        <ul class="mobile-nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#financing-options">Financing</a></li>
+            <li><a href="#process">Selling Process</a></li>
+            <li><a href="#benefits">Selling Benefits</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#lead-magnet">Get Seller Guide</a></li>
+        </ul>
+    </div>
+
+    <div class="fab-container">
+        <button class="fab-button fab-toggle-btn" aria-label="Open Floating Actions">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+        <div class="fab-actions-group">
+            <a href="tel:+16163201722" class="fab-button fab-action-btn" title="Call Jimmie">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </a>
+            <a href="sms:+16163201722" class="fab-button fab-action-btn" title="Text Jimmie">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </a>
+            <a href="mailto:info@jacksoninvestmentsolutions.com" class="fab-button fab-action-btn" title="Email Us">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </a>
+        </div>
+    </div>
+    <header>
+        <nav class="container">
+            <div class="logo">Jackson Investment Solutions</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#financing-options">Financing</a></li>
+                <li><a href="#process">Selling Process</a></li>
+                <li><a href="#benefits">Selling Benefits</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="#lead-magnet">Get Seller Guide</a></li>
+            </ul>
+            <button id="hamburgerBtn" class="hamburger-btn" aria-label="Open navigation menu">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 28px; height: 28px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+       <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Sell or Buy a Home Your Way</h1>
+                    <p class="hero-subtitle">Cash offers, Realtor® listings, financing - we do it all</p>
+                    <div class="cta-group">
+                        <a href="#contact" class="cta-btn cta-primary">Sell My Home</a>
+                        <a href="#financing-options" class="cta-btn cta-secondary">Get Pre-Approved for a Home Loan</a>
+                    </div>
+                    <div class="hero-features">
+                        <span class="feature-badge">✓ Cash Offers & Realtor® Listings</span>
+                        <span class="feature-badge">✓ Personalized Home Financing</span>
+                        <span class="feature-badge">✓ Close on Your Timeline</span>
+                        <span class="feature-badge">✓ Sell Any Condition, As-Is</span>
+                        <span class="feature-badge">✓ 24/7 Realtor Support®</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="financing-options" class="benefits fade-in-section">
+            <div class="container">
+                <h2 class="section-title">Seamless Home Financing for Buyers</h2>
+                <p class="section-subtitle">Navigating the mortgage landscape can be complex. We connect you with trusted loan officers to make financing your home simple and stress-free.</p>
+                <div class="benefits-grid">
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-check"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+                        </div>
+                        <h3>Fast & Easy Pre-Approval</h3>
+                        <p>Get pre-approved quickly to know your buying power and stand out to sellers. Our partners streamline the process with minimal hassle.</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>
+                        </div>
+                        <h3>Diverse Loan Options</h3>
+                        <p>From FHA, VA, and Conventional loans to specialized programs, we connect you with experts who find the best rates and terms for your unique situation.</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 6c0 1.8.7 3.3 1.5 4.5 1 .8 1.5 2 1.5 3.5"/><path d="M9 18h6"/><path d="M10 22h4"/><path d="M10 18a2 2 0 1 1 4 0"/></svg>
+                        </div>
+                        <h3>Expert Guidance & Support</h3>
+                        <p>Get clear, honest advice every step of the way. Our network of loan officers demystifies the financing process, from credit checks to closing.</p>
+                    </div>
+                </div>
+                <div class="cta-group">
+                    <a href="#contact" class="cta-btn cta-primary">Start My Loan Pre-Approval</a>
+                    <a href="#contact" class="cta-btn cta-secondary">Talk to a Real Estate Agent</a>
+                </div>
+            </div>
+        </section>
+        <section id="process" class="process fade-in-section">
+          <div class="container">
+            <h2 class="section-title">Our Simple 3‑Step Home Selling Process</h2>
+            <p class="section-subtitle">No stress, no waiting—just clarity on your best selling path.</p>
+            <div class="process-steps">
+              <div class="step"><div class="step-number">1</div>
+                <h3>Tell Us About Your Property</h3>
+                <p>Share your goals and property details—whether you want cash fast or want to list it. We’ll guide you.</p></div>
+              <div class="step"><div class="step-number">2</div>
+                <h3>Get a Custom Offer & Options</h3>
+                <p>Jimmie—your licensed Realtor® and local investor—will present a side-by-side comparison of a fair cash offer and a traditional listing option, tailored to your unique situation.</p></div>
+              <div class="step"><div class="step-number">3</div>
+                <h3>Choose What Works Best For You</h3>
+                <p>Sell as‑is, close in 7 days, or go the listing route. You stay in control—and walk away with clarity.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="benefits" class="benefits fade-in-section">
+            <div class="container">
+                <h2 class="section-title">The Benefits of a Direct Cash Sale</h2>
+                <p class="section-subtitle">Selling directly to us means avoiding the hassles and costs of a traditional sale. Here’s how you benefit.</p>
+                <div class="benefits-grid">
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucude-hourglass"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414-4.414A2 2 0 0 0 7 6.172V2"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414 4.414a2 2 0 0 0 .586 1.414V22"/></svg>
+                        </div>
+                        <h3>Sell in Days, Not Months</h3>
+                        <p>Why wait for a buyer? We close on your timeline, often in as little as one week.</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h12a2 2 0 0 1 0 4H5a2 2 0 0 0 0 4h12c1.1 0 2 .9 2 2v3a1 1 0 0 1-1 1H5a2 2 0 0 1 0-4h3"/><path d="M2 7h2m0 4h2m0 4h2"/></svg>
+                        </div>
+                        <h3>Keep More Cash</h3>
+                        <p>Pay zero agent commissions and no surprise fees. We even cover all standard closing costs.</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home-off"><path d="M10 22V8l7.2-6.4M2 10l8 7 1.2-1.08"/><path d="m2 2 20 20"/><path d="M19 14.8V10l-6-5.4"/></svg>
+                        </div>
+                        <h3>Sell Your House "As-Is"</h3>
+                        <p>Forget about making repairs or even cleaning. We buy your property in its current condition.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="why-us" class="benefits fade-in-section">
+          <div class="container">
+            <h2 class="section-title">Why Choose Jackson Investment Solutions?</h2>
+            <p class="section-subtitle">Jimmie is both a licensed Realtor®, seasoned local investor, and connects you to reliable financing solutions, offering you unparalleled options for buying or selling.</p>
+            <div class="benefits-grid">
+              <div class="benefit"><div class="benefit-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 6c0 1.8.7 3.3 1.5 4.5 1 .8 1.5 2 1.5 3.5"/><path d="M9 18h6"/><path d="M10 22h4"/><path d="M10 18a2 2 0 1 1 4 0"/></svg>
+              </div>
+                <h3>Dual Expertise: Realtor® & Investor</h3>
+                <p>You’re not stuck choosing between a cash buyer and an agent—I’m both. I’ll show you your options and help you decide what’s best for you.</p></div>
+              <div class="benefit"><div class="benefit-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-handshake"><path d="m11 17 2 2 4-4"/><path d="m5 12 2 2 4-4"/><path d="M7 19H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5"/></svg>
+              </div>
+                <h3>Comprehensive Solutions</h3>
+                <p>From selling quickly for cash to finding the right loan and home to buy, we simplify your entire real estate journey with integrated services.</p></div>
+              <div class="benefit"><div class="benefit-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-network"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M12 8v4"/><path d="M12 12h-2"/><path d="M12 12h2"/><path d="M16 16v-2"/><path d="M8 16v-2"/></svg>
+              </div>
+                <h3>Powerful Local Network</h3>
+                <p>Access my private buyers, contractors, and essential **lender relationships**. We don’t just offer one solution—we bring the whole playbook to your real estate goals.</p></div>
+            </div>
+          </div>
+        </section>
+        <section id="testimonials" class="testimonials fade-in-section">
+            <div class="container">
+                <h2 class="section-title">Trusted by Michigan Homeowners</h2>
+                <p class="section-subtitle">Real stories from real people we've helped across the state.</p>
+                <div class="testimonial-grid">
+                    <div class="testimonial">
+                        <img src="images/testimonials/sarah-m.jpg" alt="Sarah M. testimonial photo" class="testimonial-author-img">
+                        <div class="star-rating">★★★★★</div>
+                        <p class="testimonial-text">"I inherited a property that needed a ton of work. Jimmie gave me a fair offer and handled everything. It was a massive weight off my shoulders."</p>
+                        <p class="testimonial-author">Sarah M., Detroit, MI</p>
+                    </div>
+                    <div class="testimonial">
+                        <img src="images/testimonials/david-l.jpg" alt="David L. testimonial photo" class="testimonial-author-img">
+                        <div class="star-rating">★★★★★</div>
+                        <p class="testimonial-text">"The entire process was professional, transparent, and unbelievably fast. They closed in just over a week, exactly as they promised. I couldn't recommend them enough."</p>
+                        <p class="testimonial-author">David L., Grand Rapids, MI</p>
+                    </div>
+                    <div class="testimonial">
+                        <img src="images/testimonials/joshua-h.jpg" alt="Joshua H. testimonial photo" class="testimonial-author-img">
+                        <div class="star-rating">★★★★★</div>
+                        <p class="testimonial-text">"After my house sat on the market for months, I was stressed. I called them, and they bought it in 10 days. This allowed me to relocate for my new job without any more delays. Lifesavers!"</p>
+                        <p class="testimonial-author">Joshua H., Allendale, MI</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="lead-magnet" class="lead-magnet-section fade-in-section bg-subtle">
+            <div class="container">
+                <h2 class="section-title">Get Your Free Home Seller's Guide</h2>
+                <p class="section-subtitle">Unlock insider tips, common pitfalls to avoid, and strategies for a smooth, profitable sale. Written by a local expert who understands both sides of the market.</p>
+                <div class="form-container">
+                    <form id="guideForm" class="lead-magnet-form" name="guide-download" method="POST" data-netlify="true" data-netlify-honeypot="bot-field-guide">
+                        <input type="hidden" name="form-name" value="guide-download" />
+                        <p class="hidden">
+                            <label>Don’t fill this out if you’re human: <input name="bot-field-guide" /></label>
+                        </p>
+                        <div class="form-group full-width">
+                            <label for="guideEmail">Your Email Address *</label>
+                            <input type="email" id="guideEmail" name="email" required placeholder="your.email@example.com">
+                            <span class="error-message">Please enter a valid email address.</span>
+                        </div>
+                        <button type="submit" class="submit-btn">Download Free Guide</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="lead-form-section">
+            <div class="container">
+                <div class="form-container">
+                    <h2 class="form-title">Let’s Discuss Your Real Estate Goals</h2>
+                    <p class="form-subtitle">Whether selling or seeking financing, fill this out and Jimmie will be in touch within 24 hours.</p>
+
+                    <form id="leadForm" class="lead-form" name="property-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="property-inquiry" />
+                        <p class="hidden">
+                            <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                        </p>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                                <span class="error-message">This field is required.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number *</label>
+                                <input type="tel" id="phoneNumber" name="phoneNumber" required pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}">
+                                <span class="error-message">Please enter a valid 10-digit phone number.</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                             <div class="form-group">
+                                <label for="emailAddress">Email Address *</label>
+                                <input type="email" id="emailAddress" name="emailAddress" required>
+                                <span class="error-message">Please enter a valid email address.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="interestType">I'm interested in... *</label>
+                                <select id="interestType" name="interestType" required>
+                                    <option value="">Please select...</option>
+                                    <option value="sell-cash">Selling my home for cash</option>
+                                    <option value="sell-list">Listing my home with a Realtor®</option>
+                                    <option value="buy-financing">Getting financed to buy a home</option>
+                                    <option value="buy-agent">Working with an agent to buy a home</option>
+                                    <option value="both">Both buying and selling</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <span class="error-message">This field is required.</span>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="propertyAddress">Property Address (if selling or specific buying interest)</label>
+                            <input type="text" id="propertyAddress" name="propertyAddress" placeholder="123 Main St, City, State">
+                            <span class="error-message">This field is required if selling.</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="propertySituation">What's your selling situation? (Optional, if selling)</label>
+                                <select id="propertySituation" name="propertySituation">
+                                    <option value="">Please select...</option>
+                                    <option value="foreclosure">Facing foreclosure</option>
+                                    <option value="inherited">Inherited property</option>
+                                    <option value="divorce">Going through divorce</option>
+                                    <option value="relocation">Need to relocate quickly</option>
+                                    <option value="financial">Financial hardship</option>
+                                    <option value="repairs">Property needs major repairs</option>
+                                    <option value="other">Other situation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sellTimeline">When do you need to sell? (Optional, if selling)</label>
+                                <select id="sellTimeline" name="sellTimeline">
+                                    <option value="">Select timeline...</option>
+                                    <option value="immediately">Immediately (within 2 weeks)</option>
+                                    <option value="30days">Within 30 days</option>
+                                    <option value="60days">Within 60 days</option>
+                                    <option value="90days">Within 90 days</option>
+                                    <option value="flexible">Timeline is flexible</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="additionalInfo">Additional Information (Tell us more about your needs)</label>
+                            <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="Tell us anything else about your situation or what you're looking for..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Get My Personalized Solution</button>
+                        <p class="text-center" style="margin-top: 1rem; font-size: 0.9em; color: var(--text-muted-on-dark);">
+                            By submitting, you agree to our <a href="/privacy-policy" class="text-on-dark" style="text-decoration: underline;">Privacy Policy</a>.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section id="compare-options" class="benefits fade-in-section">
+          <div class="container">
+            <h2 class="section-title">Your Real Estate Options with Jimmie</h2>
+            <p class="section-subtitle">Whether speed, top dollar, or finding your dream home is your priority, we offer a comprehensive approach to meet your unique needs.</p>
+            <div class="benefits-grid">
+              <div class="benefit">
+                <h3>Selling Your Home</h3>
+                <ul>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>Cash Offer: Quick close in as little as 7 days</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> Sell your home "As-Is" (no repairs, no cleaning)</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> No agent commissions or fees (for cash offer)</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>Realtor® Listing: Potentially higher sale price</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> Expert negotiation on your behalf (for listings)</li>
+                </ul>
+              </div>
+              <div class="benefit">
+                <h3>Buying Your Home</h3>
+                <ul>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>Loan Officer Connection: Personalized financing solutions</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> Mortgage pre-approvals to strengthen your offer</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> Guidance on FHA, VA, Conventional, and other loans</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>Real Estate Agent Support: Home search assistance</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> Expert guidance through inspections & appraisals</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Jackson Investment Solutions, LLC</h3>
+                    <p>Your comprehensive partner for buying and selling homes in Michigan. We provide real options to help homeowners and homebuyers in any situation.</p>
+                    <div class="footer-social-links">
+                        <a href="https://facebook.com/yourprofile" target="_blank" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.5-1.333h2.833v-5h-3.5c-4.012 0-4.427 3.471-4.427 4.471v2.529z"/></svg>
+                        </a>
+                        <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-8.418c0-7.886-8.922-7.564-11.012-3.486v-2.106z"/></svg>
+                        </a>
+                        </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <p><a href="#financing-options">Home Financing</a></p>
+                    <p><a href="#process">Selling Process</a></p>
+                    <p><a href="#benefits">Selling Benefits</a></p>
+                    <p><a href="#testimonials">Reviews</a></p>
+                    <p><a href="#contact">Contact Us</a></p>
+                    <p><a href="#lead-magnet">Seller's Guide</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><a href="tel:+16163201722">📞 (616) 320-1722</a></p>
+                    <p><a href="mailto:info@jacksoninvestmentsolutions.com">📧 info@jacksoninvestmentsolutions.com</a></p>
+                    <p>📍 Serving Grand Rapids & West Michigan</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Areas We Serve</h3>
+                    <p>Grand Rapids • Wyoming<br>
+                    Kentwood • Walker<br>
+                    Allendale • Hudsonville<br>
+                    And all surrounding areas including: Ada, Cascade, Caledonia, Byron Center, East Grand Rapids, Comstock Park, Jenison, Zeeland, Holland, Muskegon, Spring Lake, Grand Haven.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Jackson Investment Solutions, LLC. All Rights Reserved. <a href="/privacy-policy" style="text-decoration: underline; color: inherit;">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Smooth Scrolling ---
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    const mobileNav = document.getElementById('mobileNav');
+                    if (targetElement) {
+                        // Calculate offset for fixed header
+                        const headerOffset = document.querySelector('header').offsetHeight;
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                        const offsetPosition = elementPosition - headerOffset - 20; // Added 20px extra padding
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // Close mobile menu on link click
+                        if(mobileNav.classList.contains('open')) {
+                            mobileNav.classList.remove('open');
+                        }
+                    }
+                });
+            });
+
+            // --- Mobile Navigation ---
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const closeBtn = document.getElementById('closeBtn');
+            const mobileNav = document.getElementById('mobileNav');
+
+            hamburgerBtn.addEventListener('click', () => {
+                mobileNav.classList.add('open');
+            });
+
+            closeBtn.addEventListener('click', () => {
+                mobileNav.classList.remove('open');
+            });
+
+            // --- Collapsible Floating Action Buttons (FAB) Logic ---
+            const fabContainer = document.querySelector('.fab-container');
+            const fabToggleBtn = document.querySelector('.fab-toggle-btn');
+            const fabActionBtns = document.querySelectorAll('.fab-action-btn');
+
+            const toggleFab = () => {
+                fabContainer.classList.toggle('expanded');
+                // Change icon based on expanded state
+                const icon = fabToggleBtn.querySelector('i');
+                if (fabContainer.classList.contains('expanded')) {
+                    icon.classList.remove('fa-comment-dots');
+                    icon.classList.add('fa-times'); // Change to 'x' icon when expanded
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-comment-dots'); // Change back to comment icon
+                }
+            };
+
+            // Toggle FAB on click of the main 'contact' button
+            fabToggleBtn.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent document click from immediately closing
+                toggleFab();
+            });
+
+            // Collapse FAB when clicking anywhere else on the document
+            document.addEventListener('click', (event) => {
+                if (!fabContainer.contains(event.target) && fabContainer.classList.contains('expanded')) {
+                    toggleFab();
+                }
+            });
+
+            // Optional: Collapse FAB after an action button is clicked
+            fabActionBtns.forEach(button => {
+                button.addEventListener('click', () => {
+                    // You might want to perform a specific action here before closing,
+                    // like triggering a form or navigating.
+                    // For now, it just closes the FAB.
+                    toggleFab();
+                });
+            });
+
+
+            // --- Form Submission Modals & Validation ---
+            const mainLeadForm = document.getElementById('leadForm'); // Main property inquiry form
+            const guideLeadForm = document.getElementById('guideForm'); // Lead magnet form
+
+            const mainModal = document.getElementById('messageModal');
+            const mainModalTitleText = document.getElementById('modalTitleText');
+            const mainModalMessage = document.getElementById('modalMessage');
+            const mainModalIcon = document.getElementById('modalIcon');
+            const mainModalCloseBtn = document.getElementById('modalCloseBtn');
+
+            const guideModal = document.getElementById('guideModal');
+            const guideModalCloseBtn = document.getElementById('guideModalCloseBtn');
+
+            const pdfDownloadPath = '/grand-rapids-seller-guide.pdf'; // Path to your PDF
+
+            const encode = (data) => {
+                return Object.keys(data)
+                    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+                    .join("&");
+            }
+
+            // Function to show a generic modal (used for main form)
+            function showMainModal(title, message, type) {
+                mainModalTitleText.textContent = title;
+                mainModalMessage.textContent = message;
+                mainModalIcon.className = 'modal-icon'; // Reset classes
+                if (type === 'success') {
+                    mainModalIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
+                    mainModalIcon.classList.add('success');
+                } else if (type === 'error') {
+                    mainModalIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-circle"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
+                    mainModalIcon.classList.add('error');
+                }
+                mainModal.classList.add('visible');
+            }
+
+            // Function to hide a generic modal (main form)
+            function hideMainModal() {
+                mainModal.classList.remove('visible');
+            }
+
+            // Function to show guide modal
+            function showGuideModal() {
+                guideModal.classList.add('visible');
+            }
+
+            // Function to hide guide modal
+            function hideGuideModal() {
+                guideModal.classList.remove('visible');
+            }
+
+            // Client-side validation function
+            function validateForm(form) {
+                let isValid = true;
+                const requiredFields = form.querySelectorAll('[required]');
+
+                requiredFields.forEach(field => {
+                    const formGroup = field.closest('.form-group');
+                    const errorMessage = formGroup.querySelector('.error-message');
+                    if (!field.value.trim()) {
+                        formGroup.classList.add('has-error');
+                        if (errorMessage) errorMessage.textContent = 'This field is required.';
+                        isValid = false;
+                    } else if (field.type === 'email' && !field.value.includes('@')) {
+                        formGroup.classList.add('has-error');
+                        if (errorMessage) errorMessage.textContent = 'Please enter a valid email address.';
+                        isValid = false;
+                    } else if (field.type === 'tel' && !/^\d{3}-?\d{3}-?\d{4}$/.test(field.value)) {
+                         formGroup.classList.add('has-error');
+                         if (errorMessage) errorMessage.textContent = 'Please enter a valid 10-digit phone number.';
+                         isValid = false;
+                    }
+                    else {
+                        formGroup.classList.remove('has-error');
+                    }
+                });
+
+                // Specific validation for propertyAddress if selling option is chosen
+                const interestTypeField = form.querySelector('#interestType');
+                const propertyAddressField = form.querySelector('#propertyAddress');
+                if (interestTypeField && propertyAddressField) {
+                    const selectedInterest = interestTypeField.value;
+                    const propertyAddressGroup = propertyAddressField.closest('.form-group');
+                    const propertyAddressError = propertyAddressGroup.querySelector('.error-message');
+
+                    if ((selectedInterest === 'sell-cash' || selectedInterest === 'sell-list' || selectedInterest === 'both') && !propertyAddressField.value.trim()) {
+                        propertyAddressGroup.classList.add('has-error');
+                        propertyAddressError.textContent = 'Property address is required for selling inquiries.';
+                        isValid = false;
+                    } else {
+                         propertyAddressGroup.classList.remove('has-error');
+                    }
+                }
+
+                return isValid;
+            }
+
+            // Reset validation states
+            function resetValidation(form) {
+                form.querySelectorAll('.form-group').forEach(group => {
+                    group.classList.remove('has-error');
+                });
+            }
+
+            // Add event listeners for input validation on blur
+            document.querySelectorAll('#leadForm [required], #guideForm [required]').forEach(input => {
+                input.addEventListener('blur', function() {
+                    const formGroup = this.closest('.form-group');
+                    const errorMessage = formGroup.querySelector('.error-message');
+                    if (!this.value.trim()) {
+                        formGroup.classList.add('has-error');
+                        if (errorMessage) errorMessage.textContent = 'This field is required.';
+                    } else if (this.type === 'email' && !this.value.includes('@')) {
+                        formGroup.classList.add('has-error');
+                        if (errorMessage) errorMessage.textContent = 'Please enter a valid email address.';
+                    } else if (this.type === 'tel' && !/^\d{3}-?\d{3}-?\d{4}$/.test(this.value)) {
+                         formGroup.classList.add('has-error');
+                         if (errorMessage) errorMessage.textContent = 'Please enter a valid 10-digit phone number.';
+                    }
+                    else {
+                        formGroup.classList.remove('has-error');
+                    }
+                });
+            });
+
+            // Specific validation trigger for #propertyAddress when #interestType changes
+            const interestTypeField = document.getElementById('interestType');
+            if (interestTypeField) {
+                interestTypeField.addEventListener('change', function() {
+                    const propertyAddressField = document.getElementById('propertyAddress');
+                    if (propertyAddressField) {
+                        const formGroup = propertyAddressField.closest('.form-group');
+                        const errorMessage = formGroup.querySelector('.error-message');
+                        const selectedInterest = this.value;
+
+                        if ((selectedInterest === 'sell-cash' || selectedInterest === 'sell-list' || selectedInterest === 'both') && !propertyAddressField.value.trim()) {
+                            formGroup.classList.add('has-error');
+                            errorMessage.textContent = 'Property address is required for selling inquiries.';
+                        } else {
+                            formGroup.classList.remove('has-error');
+                        }
+                    }
+                });
+            }
+
+
+            // Main Lead Form Submission
+            if (mainLeadForm) {
+                mainLeadForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    resetValidation(mainLeadForm); // Clear previous errors
+
+                    if (!validateForm(mainLeadForm)) {
+                        showMainModal('Oops!', 'Please correct the errors in the form before submitting.', 'error');
+                        return;
+                    }
+
+                    const submitButton = mainLeadForm.querySelector('button[type="submit"]');
+                    const formData = new FormData(mainLeadForm);
+                    const data = Object.fromEntries(formData.entries());
+
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+
+                    fetch(mainLeadForm.action, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: encode({ "form-name": mainLeadForm.getAttribute('name'), ...data })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            showMainModal('Thank You!', `We've received your information, ${data.fullName.split(' ')[0]}. Jimmie will get to work and contact you with your options within 24 hours.`, 'success');
+                            mainLeadForm.reset();
+                        } else {
+                            // Netlify might return a 400 for bad honeypot or other issues
+                            showMainModal('Error!', 'Something went wrong with your submission. Please try again or call us directly.', 'error');
+                        }
+                    })
+                    .catch((error) => {
+                        showMainModal('Error!', 'A network error occurred. Please check your connection or try again later.', 'error');
+                        console.error('Main form submission error:', error);
+                    })
+                    .finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Get My Personalized Solution';
+                    });
+                });
+            }
+
+            // Lead Magnet Form Submission
+            if (guideLeadForm) {
+                guideLeadForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    resetValidation(guideLeadForm); // Clear previous errors
+
+                    if (!validateForm(guideLeadForm)) {
+                        showMainModal('Oops!', 'Please correct the errors in the form before submitting.', 'error');
+                        return;
+                    }
+
+                    const submitButton = guideLeadForm.querySelector('button[type="submit"]');
+                    const formData = new FormData(guideLeadForm);
+                    const data = Object.fromEntries(formData.entries());
+
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Downloading...';
+
+                    fetch(guideLeadForm.action, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: encode({ "form-name": guideLeadForm.getAttribute('name'), ...data })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Trigger the PDF download
+                            const link = document.createElement('a');
+                            link.href = pdfDownloadPath;
+                            link.download = 'Grand_Rapids_Home_Sellers_Guide.pdf'; // Suggested filename
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+
+                            showGuideModal(); // Show the specific guide success modal
+                            guideLeadForm.reset();
+                        } else {
+                            showMainModal('Download Error!', 'Could not initiate download. Please try again or contact us.', 'error');
+                        }
+                    })
+                    .catch((error) => {
+                        showMainModal('Network Error!', 'A network error occurred. Please check your connection or try again.', 'error');
+                        console.error('Guide form submission error:', error);
+                    })
+                    .finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Download My Free Guide Now!';
+                    });
+                });
+            }
+
+            // Close buttons for modals
+            mainModalCloseBtn.addEventListener('click', hideMainModal);
+            guideModalCloseBtn.addEventListener('click', hideGuideModal);
+
+            // Close modals if clicked outside
+            mainModal.addEventListener('click', (e) => {
+                if (e.target === mainModal) {
+                    hideMainModal();
+                }
+            });
+            guideModal.addEventListener('click', (e) => {
+                if (e.target === guideModal) {
+                    hideGuideModal();
+                }
+            });
+
+
+            // --- Scroll Animations ---
+            const sections = document.querySelectorAll('.fade-in-section');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1 // Adjusted from 0.15 for earlier animation
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
