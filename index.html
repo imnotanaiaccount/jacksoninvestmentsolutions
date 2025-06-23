@@ -255,7 +255,7 @@
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(16px);
   border-radius: 1.25rem;
-  padding: 2.5rem 2rem;
+  padding: 2.0rem 2rem;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.2);
   max-width: 420px;
@@ -266,10 +266,11 @@
 }
 
 .realtor-photo {
-  width: 240px;
-  height: 240px;
+  width: 256px;
+  height: 256px;
   object-fit: cover;
-  border-radius: 3%;
+  object-position: center 25%; /* This will shift the image up */
+  border-radius: 15%;
   border: 0px solid #00dfd8;
   margin: 0 auto 1.50rem;
   display: block;
@@ -708,12 +709,12 @@
             list-style: none;
             padding: 0;
             margin-top: var(--space-sm);
-            text-align: left;
         }
 
         .benefit ul li {
             display: flex;
             align-items: center;
+            justify-content: center;
             margin-bottom: 0.75rem;
             color: var(--text-dark);
             font-size: 1rem;
@@ -1463,7 +1464,7 @@
         </section>
         <section id="lead-magnet" class="lead-magnet-section fade-in-section bg-subtle">
             <div class="container">
-                <h2 class="section-title">Free Home Seller's Guide</h2>
+                <h2 class="section-title">Home Seller's Guide</h2>
                 <p class="section-subtitle">Realtor® & investor tips & proven strategies for a smooth, profitable sale - written by Jimmie Jackson</p>
                 <div class="form-container">
                     <form id="guideForm" class="lead-magnet-form" name="guide-download" method="POST" data-netlify="true" data-netlify-honeypot="bot-field-guide">
@@ -1476,14 +1477,14 @@
                             <input type="email" id="guideEmail" name="email" required placeholder="your.email@example.com">
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
-                        <button type="submit" class="submit-btn contact-btn">Download Free Guide</button>
+                        <button type="submit" class="submit-btn contact-btn">Download Seller's Guide</button>
                     </form>
                 </div>
             </div>
         </section>
         <section id="lead-magnet" class="lead-magnet-section fade-in-section bg-subtle">
             <div class="container">
-                <h2 class="section-title">Free Home Buyer's Guide</h2>
+                <h2 class="section-title">Home Buyer's Guide</h2>
                 <p class="section-subtitle">Realtor® & investor tips & proven strategies for a smooth, profitable purchase - written by Jimmie Jackson</p>
                 <div class="form-container">
                     <form id="guideForm" class="lead-magnet-form" name="guide-download" method="POST" data-netlify="true" data-netlify-honeypot="bot-field-guide">
@@ -1496,7 +1497,7 @@
                             <input type="email" id="guideEmail" name="email" required placeholder="your.email@example.com">
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
-                        <button type="submit" class="submit-btn contact-btn">Download Free Guide</button>
+                        <button type="submit" class="submit-btn contact-btn">Download Buyer's Guide</button>
                     </form>
                 </div>
             </div>
