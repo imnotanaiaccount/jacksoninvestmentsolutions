@@ -23,6 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
             .join("&");
     };
 
+    /**
+     * A set of known disposable email domains to prevent spam or low-quality leads.
+     * This list is not exhaustive and can be expanded.
+     */
+    const disposableEmailDomains = new Set([
+        'mailinator.com', 'guerrillamail.com', '10minutemail.com', 'temp-mail.org', 
+        'getnada.com', 'throwawaymail.com'
+    ]);
+
     // --- MODAL HANDLING ---
 
     const mainModal = document.getElementById('messageModal');
@@ -122,9 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!field.value.trim()) {
                 fieldIsValid = false;
-            } else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
-                fieldIsValid = false;
-                errorMessage = 'Please enter a valid email address.';
+            } else if (field.type === 'email') {
+                const emailValue = field.value.trim();
+                const domain = emailValue.substring(emailValue.lastIndexOf('@') + 1).toLowerCase();
+
+                if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailValue)) {
+                    fieldIsValid = false;
+                    errorMessage = 'Please enter a valid email address.';
+                } else if (disposableEmailDomains.has(domain)) {
+                    fieldIsValid = false;
+                    errorMessage = 'Please use a permanent email address.';
+                }
             } else if (field.type === 'tel' && !/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(field.value)) {
                 fieldIsValid = false;
                 errorMessage = 'Please enter a valid 10-digit phone number.';
@@ -178,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {HTMLFormElement} form - The form being submitted.
      * @param {object} options - Configuration options for the submission.
      * @param {function} options.onSuccess - Callback function to run on successful submission.
+     * @param {object} [options.trackingEvent] - Optional GA4 tracking data.
      * @param {string} options.loadingText - Text to display on the submit button while processing.
      */
     async function handleFormSubmit(e, form, options) {
@@ -204,6 +222,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 throw new Error(`Server responded with status: ${response.status}`);
+            }
+
+            // Fire tracking event if it exists and gtag is available
+            if (options.trackingEvent && typeof gtag === 'function') {
+                gtag('event', options.trackingEvent.name, {
+                    'event_category': options.trackingEvent.category,
+                    'event_label': options.trackingEvent.label,
+                    'value': 1
+                });
             }
 
             options.onSuccess(data); // Execute the success callback
@@ -235,6 +262,11 @@ document.addEventListener('DOMContentLoaded', () => {
             onSuccess: (data) => {
                 const firstName = data.fullName.split(' ')[0];
                 showMainModal('success', 'Thank You!', `We've received your information, ${firstName}. Jimmie will get to work and contact you with your options within 24 hours.`);
+            },
+            trackingEvent: {
+                name: 'lead_form_submit',
+                category: 'form',
+                label: 'Property Inquiry Form'
             }
         }));
     }
@@ -242,14 +274,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sellerGuideForm) {
         sellerGuideForm.addEventListener('submit', (e) => handleFormSubmit(e, sellerGuideForm, {
             loadingText: 'Downloading...',
-            onSuccess: () => showGuideModal('/grand-rapids-seller-guide.pdf', 'Grand_Rapids_Home_Sellers_Guide.pdf', "The Grand Rapids Home Seller's Guide")
+            onSuccess: () => showGuideModal('/grand-rapids-seller-guide.pdf', 'Grand_Rapids_Home_Sellers_Guide.pdf', "The Grand Rapids Home Seller's Guide"),
+            trackingEvent: {
+                name: 'guide_download_submit',
+                category: 'lead_magnet',
+                label: 'Seller Guide Download'
+            }
         }));
     }
 
     if (buyerGuideForm) {
         buyerGuideForm.addEventListener('submit', (e) => handleFormSubmit(e, buyerGuideForm, {
             loadingText: 'Downloading...',
-            onSuccess: () => showGuideModal('/grand-rapids-buyer-guide.pdf', 'Grand_Rapids_Home_Buyers_Guide.pdf', "The Grand Rapids Home Buyer's Guide")
+            onSuccess: () => showGuideModal('/grand-rapids-buyer-guide.pdf', 'Grand_Rapids_Home_Buyers_Guide.pdf', "The Grand Rapids Home Buyer's Guide"),
+            trackingEvent: {
+                name: 'guide_download_submit',
+                category: 'lead_magnet',
+                label: 'Buyer Guide Download'
+            }
         }));
     }
 
