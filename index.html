@@ -1092,12 +1092,23 @@
                 });
             }
 
-            const guideForm = document.querySelector('form[name="guide-download"]');
-            if (guideForm) {
-                guideForm.addEventListener('submit', (event) => {
+            const sellerGuideForm = document.querySelector('form[name="seller-guide-download"]');
+            if (sellerGuideForm) {
+                sellerGuideForm.addEventListener('submit', (event) => {
                     gtag('event', 'guide_download_submit', {
                         'event_category': 'lead_magnet',
                         'event_label': 'Seller Guide Download',
+                        'value': 1
+                    });
+                });
+            }
+
+            const buyerGuideForm = document.querySelector('form[name="buyer-guide-download"]');
+            if (buyerGuideForm) {
+                buyerGuideForm.addEventListener('submit', (event) => {
+                    gtag('event', 'guide_download_submit', {
+                        'event_category': 'lead_magnet',
+                        'event_label': 'Buyer Guide Download',
                         'value': 1
                     });
                 });
@@ -1135,7 +1146,7 @@
                 </span>
                 <span id="guideModalTitleText">Thank You! Your Guide is Ready</span>
             </h2>
-            <p id="guideModalMessage">Your download will begin shortly. If it doesn't, <a href="downloads/PUBLISHED-The_Home_Sellers_Guide.pdf" target="_blank" class="cta-btn cta-primary" style="display: inline-flex; margin-top: 1rem;">Click to Download Now</a>.</p>
+            <p id="guideModalMessage">Your download will begin shortly. If it doesn't, <a id="guideModalFallbackLink" href="#" target="_blank" style="text-decoration: underline; color: var(--primary-blue);">click here to download it manually</a>.</p>
             <button id="guideModalCloseBtn" class="message-modal-btn">Done</button>
         </div>
     </div>
@@ -1349,7 +1360,7 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="submit-btn class="submit-btn cta-btn-primary"">
+                    <button type="submit" class="submit-btn cta-btn-primary">
                         <span>Contact Me</span>
                     </button>
                     
