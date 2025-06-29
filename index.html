@@ -96,7 +96,7 @@
   -webkit-text-fill-color: transparent;
   font-weight: bold;
   position: relative;
-  display: inline-block;
+  display: block;
   overflow: hidden;
   text-shadow: 0 0 6px rgba(0, 124, 240, 0.4); /* subtle glow */
 }
@@ -518,7 +518,7 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr)); /* Prevents overflow from long content */
             gap: var(--space-md);
         }
 
@@ -526,6 +526,7 @@
             display: flex;
             flex-direction: column;
             position: relative; /* For error messages */
+            min-width: 0; /* Allows grid items to shrink below their content's minimum size */
         }
 
         .form-group label {
@@ -561,9 +562,6 @@
             color: var(--error-red);
             font-size: 0.85rem;
             margin-top: 0.25rem;
-            position: absolute;
-            bottom: -1.5rem; /* Position below input */
-            left: 0;
             display: none; /* Hidden by default */
         }
         .form-group.has-error .error-message {
@@ -600,6 +598,35 @@
             outline: 2px solid var(--primary-blue);
             outline-offset: 2px;
         }
+
+        .required-asterisk {
+            color: var(--error-red);
+            font-weight: bold;
+            margin-left: 2px;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-muted-on-dark);
+            margin-top: 0.25rem;
+            padding-right: 0.5rem;
+        }
+
+        .privacy-notice {
+            font-size: 0.85rem;
+            color: var(--text-muted-on-dark);
+            text-align: center;
+            margin-top: var(--space-sm);
+            grid-column: 1 / -1;
+        }
+
+        .privacy-notice a, .privacy-notice a:visited {
+            color: var(--text-on-dark);
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+        .privacy-notice a:hover { color: var(--primary-blue); }
 
         .form-group.full-width {
             grid-column: 1 / -1;
@@ -1152,7 +1179,7 @@
     </div>
     <header>
         <nav class="container">
-            <div class="logo"><a href="/">Jackson Investment Solutions</a></div>
+            <div class="logo"><a href="#home">Jackson Investment Solutions</a></div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#financing-options">Financing</a></li>
