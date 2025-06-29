@@ -1079,41 +1079,7 @@
         gtag('js', new Date());
         gtag('config', 'G-YOURGA4ID'); // Replace with your GA4 Measurement ID
 
-        // Track form submission as a custom event in GA4
-        document.addEventListener('DOMContentLoaded', () => {
-            const mainForm = document.querySelector('form[name="property-inquiry"]');
-            if (mainForm) {
-                mainForm.addEventListener('submit', (event) => {
-                    gtag('event', 'lead_form_submit', {
-                        'event_category': 'form',
-                        'event_label': 'Property Inquiry Form',
-                        'value': 1
-                    });
-                });
-            }
-
-            const sellerGuideForm = document.querySelector('form[name="seller-guide-download"]');
-            if (sellerGuideForm) {
-                sellerGuideForm.addEventListener('submit', (event) => {
-                    gtag('event', 'guide_download_submit', {
-                        'event_category': 'lead_magnet',
-                        'event_label': 'Seller Guide Download',
-                        'value': 1
-                    });
-                });
-            }
-
-            const buyerGuideForm = document.querySelector('form[name="buyer-guide-download"]');
-            if (buyerGuideForm) {
-                buyerGuideForm.addEventListener('submit', (event) => {
-                    gtag('event', 'guide_download_submit', {
-                        'event_category': 'lead_magnet',
-                        'event_label': 'Buyer Guide Download',
-                        'value': 1
-                    });
-                });
-            }
-        });
+        // Form submission and analytics are now handled by js/app.js
     </script>
 
     <script type="text/javascript">
