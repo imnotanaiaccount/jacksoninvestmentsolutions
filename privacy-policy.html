@@ -49,6 +49,10 @@
             display: flex;
             flex-direction: column;
         }
+        a, a:visited {
+            text-decoration: none;
+            color: inherit;
+        }
         main {
             flex-grow: 1;
         }
@@ -97,6 +101,9 @@
         }
         .nav-links a:hover {
             color: var(--primary-blue);
+        }
+        .nav-links a:visited {
+            color: var(--text-light-gray);
         }
         .cta-btn-header {
             padding: 0.6rem 1.2rem;
@@ -165,9 +172,11 @@
             color: var(--primary-blue);
         }
         .footer-section a {
-            color: var(--text-muted-on-dark);
             text-decoration: none;
             transition: color 0.3s;
+        }
+        .footer-section a:visited {
+            color: var(--text-muted-on-dark);
         }
         .footer-section a:hover { color: var(--text-on-dark); }
         .footer-bottom {
@@ -235,7 +244,7 @@
             color: var(--primary-blue);
             font-weight: 600;
         }
-        .policy-content a {
+        .policy-content a, .policy-content a:visited {
             color: var(--primary-blue);
             text-decoration: underline;
         }
@@ -272,6 +281,9 @@
             .hamburger-btn { display: block; }
             .section-title { font-size: 2.2rem; }
             .policy-content { padding: 1.5rem; }
+            .content-section {
+                padding: 120px 0 80px; /* Reduced padding on mobile */
+            }
             .footer-content {
                 grid-template-columns: 1fr; /* Stack footer columns */
                 text-align: center;
@@ -382,8 +394,8 @@
                     <h3>Jackson Investment Solutions, LLC</h3>
                     <p>Your comprehensive partner for buying and selling homes in Michigan. We provide real options to help homeowners and homebuyers in any situation.</p>
                     <div class="footer-social-links">
-                        <a href="https://facebook.com/yourprofile" target="_blank" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.5-1.333h2.833v-5h-3.5c-4.012 0-4.427 3.471-4.427 4.471v2.529z"/></svg></a>
-                        <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-8.418c0-7.886-8.922-7.564-11.012-3.486v-2.106z"/></svg></a>
+                        <a href="https://www.facebook.com/JimmieJacksonRealtor/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.5-1.333h2.833v-5h-3.5c-4.012 0-4.427 3.471-4.427 4.471v2.529z"/></svg></a>
+                        <a href="https://www.linkedin.com/in/jimmie-jackson-a33777239/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-8.418c0-7.886-8.922-7.564-11.012-3.486v-2.106z"/></svg></a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -406,7 +418,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Jackson Investment Solutions, LLC. All Rights Reserved. <a href="privacy-policy.html" style="text-decoration: underline; color: inherit;">Privacy Policy</a></p>
+                <p>&copy; 2025 Jackson Investment Solutions, LLC. All Rights Reserved. <a href="privacy-policy.html" style="text-decoration: underline;">Privacy Policy</a></p>
             </div>
         </div>
     </footer>
@@ -436,6 +448,5 @@
             }
         });
     </script>
-
 </body>
 </html>
