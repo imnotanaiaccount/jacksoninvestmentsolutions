@@ -1,0 +1,1085 @@
+        /* --- CSS Variables: Comprehensive Brand Color Palette --- */
+        :root {
+            --primary-blue: #006EDC; /* A richer, slightly deeper blue */
+            --primary-blue-hover: #005BBF; /* Slightly darker for hover */
+            --secondary-accent: #3B82A6; /* Muted Teal for secondary accents */
+
+            --bg-light: #F9FAFB; /* Very light background for sections */
+            --bg-subtle: #E5E7EB; /* Light gray for subtle elements/borders */
+            --bg-dark: #1F2937; /* Dark background, replacing pure black */
+
+            --text-dark: #1F2937; /* Soft black for main headings/text */
+            --text-light-gray: #6B7280; /* Medium-dark gray for body text/subtitles */
+            --text-on-dark: #F3F4F6; /* Off-white for text on dark backgrounds */
+            --text-muted-on-dark: #9CA3AF; /* Muted text on dark backgrounds */
+
+            --border-light: #D1D5DB; /* Light border color */
+            --border-dark-input: #4B5563; /* Darker border for inputs on dark bg */
+
+            --star-yellow: #FACC15; /* Brighter yellow for stars */
+            --success-green: #22C55E; /* Vibrant green for success */
+            --error-red: #EF4444; /* Clear red for error */
+
+            /* General Spacing Units (optional, for consistency) */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+        }
+
+        /* --- Base styles inspired by Apple's design language --- */
+        body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: radial-gradient(circle at top left, rgba(0, 124, 240, 0.1), transparent 60%),
+              radial-gradient(circle at bottom right, rgba(0, 223, 216, 0.08), transparent 70%),
+              linear-gradient(135deg, #f3f7fc, #eaf8fb);
+  background-blend-mode: soft-light, overlay;
+  background-color: #f6fbff;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+        /* --- General Link Styling --- */
+        a, a:visited {
+            /* By default, links inherit color and have no underline. Specific styles will override this. */
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Consistent container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg); /* Using space variable */
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- Floating Action Buttons (FAB): Collapsible & Animated --- */
+        .fab-container { /* Renamed from .floating-cta */
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            /* No initial gap here, controlled by JS/expanded state */
+        }
+
+        .shiny-text {
+  background: linear-gradient(to right, #007cf0, #00dfd8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-shadow: 0 0 6px rgba(0, 124, 240, 0.4); /* subtle glow */
+}
+
+/* Shine effect */
+.shiny-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+.shiny-text:hover::before {
+  animation: shine 1.2s ease-out forwards;
+}
+
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
+}
+
+
+        .fab-button { /* Renamed from .float-btn */
+            width: 56px; /* Slightly larger for better tap target */
+            height: 56px; /* Slightly larger for better tap target */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            background-color: var(--primary-blue);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none; /* Ensure no default button border */
+            outline: none; /* Remove outline for a cleaner look, use focus style if needed */
+            font-size: 24px; /* Adjust icon size */
+            cursor: pointer;
+        }
+
+        .fab-button:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        }
+
+        /* Styles for the main toggle button */
+        .fab-toggle-btn { /* Specific class for the plus button */
+            margin-top: 0; /* No margin on initial button */
+            position: relative; /* For the icon rotation */
+            z-index: 2; /* Keep it above other buttons during collapse/expand */
+        }
+
+        .fab-toggle-btn i {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Rotate plus icon to X when expanded */
+        .fab-container.expanded .fab-toggle-btn i {
+            transform: rotate(45deg);
+        }
+
+        .fab-actions-group { /* New container for the action buttons */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+
+            /* Initially hidden and collapsed */
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8); /* Start slightly below and smaller */
+            transition: all 0.3s ease-in-out;
+            pointer-events: none; /* Prevent clicks on hidden elements */
+        }
+
+        .fab-container.expanded .fab-actions-group {
+            max-height: 300px; /* Large enough to show all buttons */
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto; /* Allow clicks when expanded */
+        }
+
+        .fab-action-btn { /* Specific class for individual action buttons */
+            margin-top: 10px; /* Space between action buttons when expanded */
+            opacity: 0; /* Start hidden */
+            visibility: hidden; /* Hide completely when collapsed */
+            transform: scale(0); /* Start scaled down */
+        }
+
+        /* When expanded, show them */
+        .fab-container.expanded .fab-action-btn {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Header: Translucent and clean */
+        header {
+            background: rgba(255, 255, 255, 0.85); /* Slightly less translucent */
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: var(--space-sm) 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.0rem; /* Slightly larger */
+            font-weight: 800; /* Bolder */
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-xl); /* Increased gap for clarity */
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light-gray); /* This is inherited, but good for specificity */
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Ensure visited links in the nav don't change color */
+        .nav-links a:visited {
+            color: var(--text-light-gray);
+        }
+
+        .heroPicture {
+  position: relative;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cta-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2.0rem auto;
+  padding: 1rem;
+  max-width: 100%;
+  position: relative;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(16px);
+  border-radius: 1.25rem;
+  padding: 2.0rem 2rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 124, 240, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.realtor-photo {
+  width: 256px;
+  height: 256px;
+  object-fit: cover;
+  object-position: center 25%; /* This will shift the image up */
+  border-radius: 15%;
+  border: 0px solid #00dfd8;
+  margin: 0 auto 1.50rem;
+  display: block;
+}
+
+
+.subtitle {
+  color: #2b445e; /* better contrast, matches your theme */
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 500;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+
+/* Ambient background glow */
+.ambient-light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 124, 240, 0.06), transparent 60%),
+              radial-gradient(circle at 70% 80%, rgba(0, 223, 216, 0.04), transparent 70%);
+  animation: light-move 12s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes light-move {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-5%, -5%); }
+}
+
+.contact-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(to right, #007cf0, #00dfd8);
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 124, 240, 0.3);
+}
+
+.contact-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 124, 240, 0.4);
+}
+
+.glass-card .shiny-text {
+  font-size: 2rem;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .glass-card {
+    padding: 2rem 1.25rem;
+  }
+  .realtor-photo {
+    width: 96px;
+    height: 96px;
+  }
+  .shiny-text {
+    font-size: 1.75rem;
+  }
+}
+
+
+#compare-options {
+  background: #f0f5fa;
+  position: relative;
+  z-index: 0;
+}
+
+.section-title {
+  margin-bottom: 1.5rem;
+}
+
+        /* Hero Section: Big, bold typography on a clean background */
+        .hero {
+            background-color: #ffffff; /* Explicitly white for this section */
+            padding: 160px 0 100px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            margin-bottom: var(--space-lg);
+        }
+
+        .hero h1 {
+            font-size: clamp(3.2rem, 5.8vw, 5rem); /* Slightly larger clamp range */
+            font-weight: 800; /* Even bolder */
+            line-height: 1.1;
+            letter-spacing: -0.04em; /* Tighter letter spacing */
+            color: var(--text-dark);
+            margin-top: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.15rem, 2vw, 2rem); /* Slightly adjusted font size */
+            font-weight: 650;
+            margin-top: calc(var(--space-md) * 1.5);
+            margin-bottom: calc(var(--space-xl) * 1.5); /* Slightly more space */
+            color: var(--text-light-gray);
+            max-width: 800px; /* Increased max width slightly */
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6; /* Improved line height */
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin-top: calc(var(--space-xl) * 1.5); /* More space after buttons */
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            background: var(--bg-subtle); /* Consistent light gray background */
+            padding: 0.7rem 1.4rem; /* Slightly larger padding */
+            border-radius: 30px; /* More rounded */
+            font-weight: 500; /* Bolder text */
+            font-size: 0.95rem; /* Slightly larger font */
+            color: var(--text-dark);
+            border: 1px solid var(--border-light); /* Consistent border */
+        }
+
+        /* CTA Buttons: Apple-style buttons */
+        .cta-group {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            margin: var(--space-xl) 0;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1.2rem 2.8rem; /* Increased padding for more presence */
+            font-weight: 500; /* Bolder text */
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem; /* Slightly larger icon gap */
+            border: 1px solid transparent;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Softer text shadow */
+        }
+
+        .cta-primary {
+            font-size: 1.10rem;
+            background-color: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Initial shadow */
+            
+        }
+
+        .cta-primary:hover {
+            background-color: var(--primary-blue-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 113, 227, 0.35); /* Stronger hover shadow */
+        }
+        .cta-primary:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        .cta-secondary {
+            
+            font-size: 0.95rem;
+            background-color: transparent; /* Changed */
+            color: var(--primary-blue); /* Changed */
+            border: 1px solid var(--primary-blue); /* Clearer border */
+            box-shadow: none; /* No initial shadow */
+        }
+
+        .cta-secondary:hover {
+            background-color: var(--primary-blue); /* Fill on hover */
+            color: white; /* Text color on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 113, 227, 0.35); /* Stronger hover shadow */
+        }
+        .cta-secondary:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        /* Lead Form Section: Premium dark section */
+        .lead-form-section {
+            background-color: var(--bg-dark); /* Using new dark background variable */
+            padding: 120px 0;
+            color: var(--text-on-dark); /* Text color on dark background */
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-container {
+            max-width: 700px; /* Slightly wider form */
+            margin: 0 auto;
+        }
+
+        .form-title {
+            font-size: 3rem; /* Slightly larger */
+            font-weight: 800; /* Bolder */
+            text-align: center;
+            margin-bottom: var(--space-sm);
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            font-size: 1.25rem; /* Slightly larger */
+            margin-bottom: var(--space-xl);
+            color: var(--text-muted-on-dark); /* Muted text for subtitle */
+        }
+
+        .lead-form {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr)); /* Prevents overflow from long content */
+            gap: var(--space-md);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            position: relative; /* For error messages */
+            min-width: 0; /* Allows grid items to shrink below their content's minimum size */
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-muted-on-dark);
+            margin-bottom: var(--space-xs);
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1.1rem; /* Slightly more padding */
+            border: 1px solid var(--border-dark-input);
+            border-radius: 12px;
+            font-size: 1.05rem; /* Slightly larger font */
+            background-color: var(--text-dark); /* Darker input background */
+            color: var(--text-on-dark);
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.45); /* Stronger focus shadow */
+        }
+
+        .form-group .error-message {
+            color: var(--error-red);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none; /* Hidden by default */
+        }
+        .form-group.has-error .error-message {
+            display: block;
+        }
+        .form-group.has-error input,
+        .form-group.has-error select,
+        .form-group.has-error textarea {
+            border-color: var(--error-red);
+        }
+
+
+        .submit-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 1.25rem 2.2rem; /* Increased padding */
+            border: none;
+            border-radius: 50px;
+            font-size: 1.15rem; /* Slightly larger font */
+            font-weight: 700; /* Bolder text */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: var(--space-md);
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Initial shadow */
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-blue-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 113, 227, 0.4); /* Stronger hover shadow */
+        }
+        .submit-btn:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        .required-asterisk {
+            color: var(--error-red);
+            font-weight: bold;
+            margin-left: 2px;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-muted-on-dark);
+            margin-top: 0.25rem;
+            padding-right: 0.5rem;
+        }
+
+        .privacy-notice {
+            font-size: 0.85rem;
+            color: var(--text-muted-on-dark);
+            text-align: center;
+            margin-top: var(--space-sm);
+            grid-column: 1 / -1;
+        }
+
+        .privacy-notice a, .privacy-notice a:visited {
+            color: var(--text-on-dark);
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+        .privacy-notice a:hover { color: var(--primary-blue); }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Process & Benefits Sections: Clean, card-based layout */
+        .process, .benefits, .testimonials, #why-us, #compare-options, .lead-magnet-section, #financing-options { /* Added .lead-magnet-section and #financing-options */
+            padding: 120px 0; /* Consistent vertical padding */
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3.2rem; /* Larger */
+            font-weight: 800; /* Bolder */
+            letter-spacing: -0.03em;
+            margin-bottom: var(--space-md);
+            color: var(--text-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.4rem; /* Larger */
+            margin-bottom: 5.5rem; /* More space */
+            color: var(--text-light-gray);
+            max-width: 650px; /* Slightly wider */
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7; /* Improved line height */
+        }
+
+        .process-steps, .benefits-grid, .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); /* Slightly wider min width */
+            gap: var(--space-lg); /* More gap */
+        }
+
+        .step, .benefit, .testimonial {
+            background: white;
+            padding: 2.8rem; /* More padding */
+            border-radius: 20px; /* Consistent rounded corners */
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid var(--border-light);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Softer initial shadow */
+        }
+
+        .step:hover, .benefit:hover, .testimonial:hover {
+            transform: translateY(-8px); /* Softer lift */
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* More pronounced hover shadow */
+            border-color: transparent; /* No border on hover */
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px; /* Slightly larger number bubble */
+            height: 55px;
+            background-color: var(--primary-blue);
+            color: white;
+            font-size: 1.6rem;
+            font-weight: 700;
+            border-radius: 50%;
+            margin-bottom: var(--space-md);
+            box-shadow: 0 4px 10px rgba(0, 110, 220, 0.2); /* Shadow for the number */
+        }
+
+        .step h3, .benefit h3 {
+            font-size: 1.6rem; /* Larger heading */
+            font-weight: 700; /* Bolder */
+            margin-bottom: var(--space-sm);
+            color: var(--text-dark);
+        }
+
+        .step p, .benefit p {
+            color: var(--text-light-gray);
+            line-height: 1.7; /* Improved line height */
+            font-size: 1.05rem; /* Slightly larger body text */
+        }
+
+        .benefits {
+            background-color: #ffffff; /* Explicitly white for this section */
+        }
+
+        .benefit-icon {
+            color: var(--secondary-accent); /* Using secondary accent color for icons */
+            margin-bottom: var(--space-md);
+            width: 55px; /* Larger icon size */
+            height: 55px;
+            display: inline-block; /* To center SVG properly */
+            stroke-width: 1.8; /* Thinner stroke for icons */
+        }
+
+        .benefit ul {
+            list-style: none;
+            padding: 0;
+            margin-top: var(--space-sm);
+        }
+
+        .benefit ul li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .benefit ul li svg {
+            margin-right: 0.75rem;
+            color: var(--primary-blue); /* Checkmark color */
+            min-width: 20px;
+        }
+
+        /* Testimonials: Focus on quote styling */
+        .testimonial-grid {
+             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+
+        .testimonial-text {
+            font-size: 1.18rem; /* Slightly larger */
+            line-height: 1.8; /* More comfortable line height */
+            margin-bottom: var(--space-md);
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1rem; /* Slightly larger */
+        }
+
+        .star-rating {
+            color: var(--star-yellow);
+            margin-bottom: var(--space-sm);
+            font-size: 1.4rem; /* Larger stars */
+        }
+
+        /* Optional: Testimonial image */
+        .testimonial-author-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto var(--space-sm); /* Centered and space below */
+            border: 2px solid var(--border-light);
+            display: block; /* To apply margin auto */
+        }
+
+        /* Footer: Simple and clean dark footer */
+        footer {
+            background: var(--bg-dark); /* Using new dark background variable */
+            color: var(--text-muted-on-dark);
+            padding: 5rem 0 3rem;
+            text-align: left;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Slightly wider min column */
+            gap: var(--space-xl);
+            margin-bottom: 4rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: var(--space-md);
+            color: var(--text-on-dark); /* Text color on dark background */
+            font-weight: 600;
+            font-size: 1.05rem; /* Slightly larger */
+        }
+
+        .footer-section p {
+            line-height: 1.6;
+        }
+
+        .footer-section a {
+            color: var(--text-muted-on-dark); /* This is inherited, but good for specificity */
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--text-on-dark);
+        }
+
+        /* Ensure visited links in the footer don't change color */
+        .footer-section a:visited {
+            color: var(--text-muted-on-dark);
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: flex-start; /* Align left */
+        }
+
+        .footer-social-links a {
+            color: var(--text-on-dark);
+            font-size: 1.5rem; /* Larger icons */
+            transition: color 0.3s ease;
+        }
+
+        .footer-social-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-dark-input);
+            padding-top: var(--space-xl);
+            margin-top: var(--space-xl);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Message Modal */
+        .message-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6); /* Slightly darker overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .message-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message-modal-content {
+            background: white;
+            padding: var(--space-xl);
+            border-radius: 16px;
+            text-align: center;
+            max-width: 450px; /* Slightly wider */
+            width: 90%;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Springier animation */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* More prominent shadow */
+        }
+
+        .message-modal.visible .message-modal-content {
+            transform: scale(1);
+        }
+
+        .message-modal h2 {
+            font-size: 1.8rem; /* Larger */
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            color: var(--text-dark);
+        }
+
+        .modal-icon {
+            font-size: 2.5rem; /* Larger icon */
+            line-height: 1;
+            display: inline-block; /* Ensure proper rendering for SVG */
+        }
+
+        .modal-icon.success {
+            color: var(--success-green);
+        }
+        .modal-icon.error {
+            color: var(--error-red);
+        }
+
+        .message-modal p {
+            color: var(--text-light-gray);
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .message-modal-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: var(--space-lg);
+        }
+
+        .message-modal-btn:hover {
+            background-color: var(--primary-blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 113, 227, 0.2);
+        }
+
+        /* Styles for the lead magnet specific form and modal */
+        .lead-magnet-form {
+            max-width: 500px; /* Adjust width as needed */
+            margin: 0 auto;
+            background: white;
+            padding: var(--space-lg);
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: left; /* Align text within form groups */
+        }
+
+        .lead-magnet-form .form-group label {
+            color: var(--text-dark); /* Darker label for light background */
+        }
+
+        .lead-magnet-form .form-group input {
+            background-color: var(--bg-light); /* Lighter input background */
+            border-color: var(--border-light); /* Lighter border */
+            color: var(--text-dark); /* Darker text */
+        }
+
+        .lead-magnet-form .submit-btn {
+            background-color: var(--primary-blue); /* Use primary blue for guide button */
+        }
+
+        .lead-magnet-form .submit-btn:hover {
+            background-color: var(--primary-blue-hover); /* Darker on hover */
+        }
+
+        /* Mobile Navigation Menu */
+        .hamburger-btn {
+            display: none; /* Hidden by default */
+            z-index: 1001;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
+            padding: 0.5rem;
+        }
+
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 245, 247, 0.98);
+            backdrop-filter: blur(15px); /* Slightly more blur */
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease, visibility 0.4s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .mobile-nav-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .mobile-nav-links li {
+            margin: 2rem 0;
+        }
+
+        .mobile-nav-links a {
+            font-size: 2.2rem; /* Larger on mobile */
+            font-weight: 700; /* Bolder */
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .mobile-nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2.8rem; /* Larger close button */
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* Scroll Animation */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1); /* Slower, smoother animation */
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger-btn {
+                display: block; /* Show on mobile */
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 120px 0 80px; /* Reduced padding on mobile */
+            }
+            .hero h1 {
+                font-size: clamp(2.4rem, 8vw, 3.5rem); /* Adjust hero heading size */
+                font-weight: 800;
+            }
+            .hero-subtitle {
+                font-size: 1.15rem;
+                font-weight: 650;
+            }
+            /* Reduce padding on all major sections for mobile */
+            .process, .benefits, .testimonials, #why-us, #compare-options, .lead-magnet-section, #financing-options, .lead-form-section {
+                padding: 80px 0;
+            }
+            footer {
+                padding: 3rem 0 2rem;
+            }
+            .section-subtitle {
+                margin-bottom: 3.5rem;
+            }
+            .section-title {
+                font-size: 2.2rem; /* Smaller titles on mobile */
+            }
+            .section-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 3rem;
+            }
+            .step, .benefit, .testimonial {
+                padding: 2rem; /* Reduced card padding */
+            }
+            .footer-content {
+                grid-template-columns: 1fr; /* Stack footer columns */
+                text-align: center;
+            }
+            .footer-section h3 {
+                margin-top: 1.5rem;
+            }
+            /* Adjusted FAB positioning for smaller screens */
+            .fab-container {
+                bottom: 20px;
+                right: 20px;
+            }
+            .footer-social-links {
+                justify-content: center; /* Center social links on mobile */
+            }
+        }
