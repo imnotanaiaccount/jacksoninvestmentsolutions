@@ -59,9 +59,15 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  overflow-x: hidden; /* Prevents horizontal scrollbars from breaking layouts */
 }
 
-
+        /* --- General Link Styling --- */
+        a, a:visited {
+            /* By default, links inherit color and have no underline. Specific styles will override this. */
+            text-decoration: none;
+            color: inherit;
+        }
 
         /* Consistent container */
         .container {
@@ -69,6 +75,8 @@
             margin: 0 auto;
             padding: 0 var(--space-lg); /* Using space variable */
         }
+
+        .hidden { display: none !important; }
 
         /* --- Floating Action Buttons (FAB): Collapsible & Animated --- */
         .fab-container { /* Renamed from .floating-cta */
@@ -229,7 +237,7 @@
         }
 
         .nav-links a {
-            color: var(--text-light-gray);
+            color: var(--text-light-gray); /* This is inherited, but good for specificity */
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
@@ -237,6 +245,11 @@
 
         .nav-links a:hover {
             color: var(--primary-blue);
+        }
+
+        /* Ensure visited links in the nav don't change color */
+        .nav-links a:visited {
+            color: var(--text-light-gray);
         }
 
         .heroPicture {
@@ -797,13 +810,18 @@
         }
 
         .footer-section a {
-            color: var(--text-muted-on-dark);
+            color: var(--text-muted-on-dark); /* This is inherited, but good for specificity */
             text-decoration: none;
             transition: color 0.3s;
         }
 
         .footer-section a:hover {
             color: var(--text-on-dark);
+        }
+
+        /* Ensure visited links in the footer don't change color */
+        .footer-section a:visited {
+            color: var(--text-muted-on-dark);
         }
 
         .footer-social-links {
@@ -1049,6 +1067,16 @@
                 font-size: 1.15rem;
                 font-weight: 650;
             }
+            /* Reduce padding on all major sections for mobile */
+            .process, .benefits, .testimonials, #why-us, #compare-options, .lead-magnet-section, #financing-options, .lead-form-section {
+                padding: 80px 0;
+            }
+            footer {
+                padding: 3rem 0 2rem;
+            }
+            .section-subtitle {
+                margin-bottom: 3.5rem;
+            }
             .section-title {
                 font-size: 2.2rem; /* Smaller titles on mobile */
             }
@@ -1076,7 +1104,6 @@
             }
         }
     </style>
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA4_ID"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -1108,7 +1135,6 @@
             <button id="modalCloseBtn" class="message-modal-btn">Done</button>
         </div>
     </div>
-
     <div id="guideModal" class="message-modal">
         <div class="message-modal-content">
             <h2 id="guideModalTitle">
@@ -1543,7 +1569,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Jackson Investment Solutions, LLC. All Rights Reserved. <a href="privacy-policy.html" rel="noopener noreferrer" style="text-decoration: underline; color: inherit;">Privacy Policy</a></p>
+                <p>&copy; 2025 Jackson Investment Solutions, LLC. All Rights Reserved. <a href="privacy-policy.html" rel="noopener noreferrer" style="text-decoration: underline; color: var(--text-muted-on-dark);">Privacy Policy</a></p>
             </div>
         </div>
     </footer>
