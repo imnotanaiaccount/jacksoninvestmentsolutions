@@ -114,69 +114,77 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- FORM VALIDATION & HANDLING ---
 
     /**
-     * Validates a form based on required fields and specific patterns.
+     * Validates a single form field and updates its UI state.
+     * @param {HTMLElement} field - The input, select, or textarea element to validate.
+     * @returns {boolean} - True if the field is valid, false otherwise.
+     */
+    function validateField(field) {
+        const formGroup = field.closest('.form-group');
+        if (!formGroup) return true; // Not a field we are validating
+
+        let fieldIsValid = true;
+        let errorMessage = 'This field is required.';
+        const errorElement = formGroup.querySelector('.error-message');
+
+        // Reset error state first
+        formGroup.classList.remove('has-error');
+        if (errorElement) errorElement.textContent = '';
+
+        if (field.hasAttribute('required') && !field.value.trim()) {
+            fieldIsValid = false;
+        } else if (field.type === 'email' && field.value.trim()) {
+            const emailValue = field.value.trim();
+            const domain = emailValue.substring(emailValue.lastIndexOf('@') + 1).toLowerCase();
+
+            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailValue)) {
+                fieldIsValid = false;
+                errorMessage = 'Please enter a valid email address.';
+            } else if (disposableEmailDomains.has(domain)) {
+                fieldIsValid = false;
+                errorMessage = 'Please use a permanent email address.';
+            }
+        } else if (field.type === 'tel' && field.value.trim() && !/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(field.value)) {
+            fieldIsValid = false;
+            errorMessage = 'Please enter a valid 10-digit phone number.';
+        } else if (field.id === 'fullName' && field.value.trim() && field.value.trim().split(' ').length < 2) {
+            fieldIsValid = false;
+            errorMessage = 'Please enter your first and last name.';
+        }
+
+        // Special case for property address, which is conditionally required
+        if (field.id === 'propertyAddress') {
+            const interestTypeField = field.form.querySelector('#interestType');
+            const selectedInterest = interestTypeField.value;
+            const isSellingInterest = ['sell-cash', 'sell-list', 'both'].includes(selectedInterest);
+            if (isSellingInterest && !field.value.trim()) {
+                fieldIsValid = false;
+                errorMessage = 'Property address is required for selling inquiries.';
+            }
+        }
+
+        if (!fieldIsValid) {
+            formGroup.classList.add('has-error');
+            if (errorElement) errorElement.textContent = errorMessage;
+        }
+
+        return fieldIsValid;
+    }
+
+    /**
+     * Validates an entire form by checking each of its fields.
      * @param {HTMLFormElement} form - The form element to validate.
      * @returns {boolean} - True if the form is valid, false otherwise.
      */
     function validateForm(form) {
-        let isValid = true;
-        form.querySelectorAll('.form-group.has-error').forEach(group => group.classList.remove('has-error'));
-
-        // Validate all fields with the 'required' attribute
-        form.querySelectorAll('[required]').forEach(field => {
-            const formGroup = field.closest('.form-group');
-            if (!formGroup) return;
-            let fieldIsValid = true;
-            let errorMessage = 'This field is required.';
-
-            if (!field.value.trim()) {
-                fieldIsValid = false;
-            } else if (field.type === 'email') {
-                const emailValue = field.value.trim();
-                const domain = emailValue.substring(emailValue.lastIndexOf('@') + 1).toLowerCase();
-
-                if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailValue)) {
-                    fieldIsValid = false;
-                    errorMessage = 'Please enter a valid email address.';
-                } else if (disposableEmailDomains.has(domain)) {
-                    fieldIsValid = false;
-                    errorMessage = 'Please use a permanent email address.';
-                }
-            } else if (field.type === 'tel' && !/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(field.value)) {
-                fieldIsValid = false;
-                errorMessage = 'Please enter a valid 10-digit phone number.';
-            } else if (field.id === 'fullName' && field.value.trim().split(' ').length < 2) {
-                fieldIsValid = false;
-                errorMessage = 'Please enter your first and last name.';
-            }
-
-
-            if (!fieldIsValid) {
-                formGroup.classList.add('has-error');
-                const errorElement = formGroup.querySelector('.error-message');
-                if (errorElement) errorElement.textContent = errorMessage;
-                isValid = false;
+        let isFormValid = true;
+        // We validate all fields that could have validation rules.
+        form.querySelectorAll('input, select, textarea').forEach(field => {
+            // Use a flag to ensure all fields are validated, not short-circuiting with `&&`
+            if (!validateField(field)) {
+                isFormValid = false;
             }
         });
-
-        // Specific validation for the main lead form's property address field
-        const interestTypeField = form.querySelector('#interestType');
-        const propertyAddressField = form.querySelector('#propertyAddress');
-        if (interestTypeField && propertyAddressField) {
-            const selectedInterest = interestTypeField.value;
-            const propertyAddressGroup = propertyAddressField.closest('.form-group');
-            if (propertyAddressGroup) {
-                 const isSellingInterest = ['sell-cash', 'sell-list', 'both'].includes(selectedInterest);
-                 if (isSellingInterest && !propertyAddressField.value.trim()) {
-                     propertyAddressGroup.classList.add('has-error');
-                     const errorElement = propertyAddressGroup.querySelector('.error-message');
-                     if (errorElement) errorElement.textContent = 'Property address is required for selling inquiries.';
-                     isValid = false;
-                 }
-            }
-        }
-
-        return isValid;
+        return isFormValid;
     }
 
     /**
@@ -296,13 +304,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
     }
 
-    // Real-time validation on input blur
-    document.querySelectorAll('#leadForm [required], #sellerGuideForm [required], #buyerGuideForm [required]').forEach(input => {
+    // Real-time validation on input blur for all form fields
+    document.querySelectorAll('#leadForm input, #leadForm select, #sellerGuideForm input, #buyerGuideForm input').forEach(input => {
         input.addEventListener('blur', function() {
-            validateForm(this.form);
+            validateField(this);
         });
     });
-    
+
     // Character counter for textarea
     const additionalInfo = document.getElementById('additionalInfo');
     const charCount = document.getElementById('charCount');
@@ -364,6 +372,18 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // Track clicks on the "Contact Jimmie" button in the profile cards
+    document.querySelectorAll('.cta-profile .contact-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            if (typeof gtag === 'function') {
+                gtag('event', 'contact_card_click', {
+                    'event_category': 'engagement',
+                    'event_label': 'Contact Jimmie Profile Card'
+                });
+            }
+        });
+    });
     
     // Validate property address when interest type changes
     if (interestTypeDropdown) {
