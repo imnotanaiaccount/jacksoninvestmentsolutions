@@ -1,94 +1,57 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const leadForm = document.getElementById('leadForm');
+// netlify/functions/submit-to-n8n.js
+const fetch = require('node-fetch'); // For making HTTP requests in Node.js
 
-    if (leadForm) {
-        leadForm.addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent default browser submission
-
-            // Clear all previous error messages
-            document.querySelectorAll('.error-message').forEach(span => {
-                span.style.display = 'none';
-            });
-
-            let isValid = true;
-            const formData = new FormData(leadForm); // Get form data
-
-            // --- Client-Side Validation ---
-            // Example: Validate Full Name
-            const fullNameInput = document.getElementById('fullName');
-            if (fullNameInput && fullNameInput.value.trim() === '') {
-                fullNameInput.nextElementSibling.style.display = 'block'; // Show error message
-                isValid = false;
-            }
-
-            // Example: Validate Phone Number
-            const phoneNumberInput = document.getElementById('phoneNumber');
-            const phonePattern = /^[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/;
-            if (phoneNumberInput && (!phoneNumberInput.value.trim() || !phonePattern.test(phoneNumberInput.value.trim()))) {
-                phoneNumberInput.nextElementSibling.style.display = 'block';
-                isValid = false;
-            }
-
-            // Example: Validate Email
-            const emailAddressInput = document.getElementById('emailAddress');
-            // Basic email regex (can be more robust if needed)
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (emailAddressInput && (!emailAddressInput.value.trim() || !emailPattern.test(emailAddressInput.value.trim()))) {
-                emailAddressInput.nextElementSibling.style.display = 'block';
-                isValid = false;
-            }
-
-            // Example: Validate Interest Type
-            const interestTypeSelect = document.getElementById('interestType');
-            if (interestTypeSelect && interestTypeSelect.value === '') {
-                interestTypeSelect.nextElementSibling.style.display = 'block';
-                isValid = false;
-            }
-
-            // You might also have logic to show/hide propertyAddress based on interestType
-            // and make propertyAddress required only if selling options are selected.
-            // For now, assume it's optional unless explicitly chosen.
-
-            if (!isValid) {
-                // If validation fails, stop here
-                return;
-            }
-
-            // --- If validation passes, submit to Netlify via AJAX ---
-            try {
-                // Netlify recommends submitting to the root path for AJAX forms
-                const response = await fetch('/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams(formData).toString()
-                });
-
-                if (response.ok) {
-                    // Success! You can display a success message to the user
-                    alert('Your message has been sent successfully!'); // Replace with a nicer UI update
-                    leadForm.reset(); // Clear the form
-                    // Optionally redirect to a success page or display a success div
-                    // window.location.href = '/success.html';
-                } else {
-                    // Something went wrong with Netlify's processing
-                    alert('There was an error submitting your form. Please try again.'); // Replace with UI update
-                    console.error('Form submission failed:', response.statusText);
-                }
-            } catch (error) {
-                // Network error or other JavaScript error
-                alert('A network error occurred. Please check your connection and try again.'); // Replace with UI update
-                console.error('Network or JS error:', error);
-            }
-        });
-
-        // Optional: Add event listeners to input fields to hide error messages when user types
-        document.querySelectorAll('.form-group input, .form-group select, .form-group textarea').forEach(input => {
-            input.addEventListener('input', function() {
-                const errorMessage = this.nextElementSibling;
-                if (errorMessage && errorMessage.classList.contains('error-message')) {
-                    errorMessage.style.display = 'none';
-                }
-            });
-        });
+exports.handler = async function(event, context) {
+    if (event.httpMethod !== 'POST') {
+        return { statusCode: 405, body: 'Method Not Allowed' };
     }
-});
+
+    // Netlify's outgoing webhook sends the form data as URL-encoded
+    // It's crucial that this parsing is correct.
+    const submittedData = new URLSearchParams(event.body);
+    const payload = {};
+    for (const [key, value] of submittedData.entries()) {
+        payload[key] = value;
+    }
+
+    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+
+    if (!n8nWebhookUrl) {
+        console.error('N8N_WEBHOOK_URL environment variable is not set!');
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Server configuration error: N8n URL missing.' })
+        };
+    }
+
+    try {
+        const response = await fetch(n8nWebhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Send as JSON to n8n
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error sending data to n8n:', response.status, errorText);
+            return {
+                statusCode: response.status,
+                body: JSON.stringify({ message: 'Failed to send data to automation service.' })
+            };
+        }
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: 'Form submitted and sent to automation successfully!' })
+        };
+
+    } catch (error) {
+        console.error('Function error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Internal server error during form processing.' })
+        };
+    }
+};
