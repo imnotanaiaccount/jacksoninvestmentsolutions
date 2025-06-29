@@ -200,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function handleFormSubmit(e, form, options) {
         e.preventDefault();
+        e.stopImmediatePropagation(); // Prevents other 'submit' listeners on this form from running
         if (!validateForm(form)) {
             showMainModal('error', 'Oops!', 'Please correct the errors marked in the form before submitting.');
             return;
