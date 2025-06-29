@@ -10,7 +10,8 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://*.google-analytics.com https://*.clarity.ms;">
     
     <!-- Added Subresource Integrity (SRI) for security -->
-    <script src="https://cdn.tailwindcss.com" integrity="sha384-noname-yet" crossorigin="anonymous"></script> <!-- NOTE: You need to generate a valid SRI hash for your version of Tailwind. -->
+    <!-- Using a specific version of Tailwind is better for security and stability. The SRI hash ensures the file is not tampered with. -->
+    <script src="https://cdn.tailwindcss.com/3.4.3" integrity="sha384-e6A5LS1qad2SPwIe3U6l7yJgI+1x3L3w22Sg4Ekz4G2fD7I1w+JajDBrCBIyT27j" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1076,12 +1077,12 @@
         }
     </style>
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOURGA4ID"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA4_ID"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-YOURGA4ID'); // Replace with your GA4 Measurement ID
+        gtag('config', 'G-YOUR_GA4_ID'); // Replace with your GA4 Measurement ID
 
         // Form submission and analytics are now handled by js/app.js
     </script>
@@ -1091,7 +1092,7 @@
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "YOUR_CLARITY_PROJECT_ID"); // Replace with your Clarity Project ID
+        })(window, document, "clarity", "script", "YOUR_CLARITY_PROJECT_ID"); // Replace with your Microsoft Clarity Project ID
     </script>
 
 </head>
@@ -1509,10 +1510,10 @@
                     <h3>Jackson Investment Solutions, LLC</h3>
                     <p>Your comprehensive partner for buying and selling homes in Michigan. We provide real options to help homeowners and homebuyers in any situation.</p>
                     <div class="footer-social-links">
-                        <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <a href="https://www.facebook.com/JimmieJacksonRealtor/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.5-1.333h2.833v-5h-3.5c-4.012 0-4.427 3.471-4.427 4.471v2.529z"/></svg>
                         </a>
-                        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <a href="https://www.linkedin.com/in/jimmie-jackson-a33777239/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-8.418c0-7.886-8.922-7.564-11.012-3.486v-2.106z"/></svg>
                         </a>
                         </div>
