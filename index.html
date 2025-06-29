@@ -1210,10 +1210,11 @@
                 </div>
             </div>
         </section>
+        
         <section id="financing-options" class="benefits fade-in-section">
             <div class="container">
                 <h2 class="section-title">Seamless Home Financing for Buyers</h2>
-                <p class="section-subtitle">Navigating the mortgage landscape can be complex. We connect you with trusted loan officers to make financing your home simple and stress-free.</p>
+                <p class="section-subtitle">Navigating the mortgage landscape can be complex. We connect you with trusted loan officers to make financing your home simple & stress-free.</p>
                 <div class="benefits-grid">
                     <div class="benefit">
                         <div class="benefit-icon">
@@ -1246,21 +1247,118 @@
         <section id="process" class="process fade-in-section">
           <div class="container">
             <h2 class="section-title">Our Simple 3‑Step Home Selling Process</h2>
-            <p class="section-subtitle">No stress, no waiting—just clarity on your best selling path.</p>
+            <p class="section-subtitle">No stress or waiting - instant clarity on your best selling path.</p>
             <div class="process-steps">
               <div class="step"><div class="step-number">1</div>
                 <h3>Tell Us About Your Property</h3>
                 <p>Share your goals and property details—whether you want cash fast or want to list it. We’ll guide you.</p></div>
               <div class="step"><div class="step-number">2</div>
                 <h3>Get a Custom Offer & Options</h3>
-                <p>Jimmie—your licensed Realtor® and local investor—will present a side-by-side comparison of a fair cash offer and a traditional listing option, tailored to your unique situation.</p></div>
+                <p>Jimmie, licensed Realtor® & real-estate investor, will present a side-by-side comparison of a fair cash offer and a traditional listing option, tailored to your unique situation.</p></div>
               <div class="step"><div class="step-number">3</div>
                 <h3>Choose What Works Best For You</h3>
                 <p>Sell as‑is, close in 7 days, or go the listing route. You stay in control—and walk away with clarity.</p></div>
             </div>
           </div>
         </section>
-
+        <section id="contact" class="lead-form-section">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="form-title">Contact Us Today</h2>
+                <p class="form-subtitle">Whether selling or buying, Jimmie will contact you within 24 hours.</p>
+                
+                <form id="leadForm" class="lead-form" name="property-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+                    <input type="hidden" name="form-name" value="property-inquiry" />
+                    <p class="hidden">
+                        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                    </p>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name <span class="required-asterisk">*</span></label>
+                            <input type="text" id="fullName" name="fullName" required autocomplete="name" placeholder="John Doe">
+                            <span class="error-message">Please enter your full name (first and last name).</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number <span class="required-asterisk">*</span></label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" required pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" placeholder="(555) 123-4567" autocomplete="tel">
+                            <span class="error-message">Please enter a valid 10-digit phone number.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emailAddress">Email Address <span class="required-asterisk">*</span></label>
+                            <input type="email" id="emailAddress" name="emailAddress" required placeholder="you@example.com" autocomplete="email">
+                            <span class="error-message">Please enter a valid email address.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="interestType">I'm interested in... <span class="required-asterisk">*</span></label>
+                            <select id="interestType" name="interestType" required>
+                                <option value="">Please select...</option>
+                                <option value="sell-cash">💰 Selling my home for cash</option>
+                                <option value="sell-list">🏠 Listing my home with a Realtor®</option>
+                                <option value="buy-financing">💳 Getting financed to buy a home</option>
+                                <option value="buy-agent">🤝 Working with an agent to buy a home</option>
+                                <option value="both">🔄 Both buying and selling</option>
+                                <option value="other">❓ Other</option>
+                            </select>
+                            <span class="error-message">Please select your area of interest.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="propertyAddress">Property Address</label>
+                        <input type="text" id="propertyAddress" name="propertyAddress" placeholder="123 Main St, City, State, ZIP" autocomplete="street-address">
+                        <span class="error-message">Please provide the property address.</span>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="propertySituation">What's your selling situation? (Optional)</label>
+                            <select id="propertySituation" name="propertySituation">
+                                <option value="">Please select...</option>
+                                <option value="foreclosure">⚠️ Facing foreclosure</option>
+                                <option value="inherited">🏛️ Inherited property</option>
+                                <option value="divorce">💔 Going through divorce</option>
+                                <option value="relocation">📦 Need to relocate quickly</option>
+                                <option value="financial">💸 Financial hardship</option>
+                                <option value="repairs">🔧 Property needs major repairs</option>
+                                <option value="other">📝 Other situation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sellTimeline">When do you need to sell? (Optional)</label>
+                            <select id="sellTimeline" name="sellTimeline">
+                                <option value="">Select timeline...</option>
+                                <option value="immediately">🚨 Immediately (within 2 weeks)</option>
+                                <option value="30days">📅 Within 30 days</option>
+                                <option value="60days">🗓️ Within 60 days</option>
+                                <option value="90days">📆 Within 90 days</option>
+                                <option value="flexible">⏰ Timeline is flexible</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="additionalInfo">Additional Information</label>
+                        <textarea id="additionalInfo" name="additionalInfo" rows="4" placeholder="Tell us more about your needs, timeline, or any specific requirements..." maxlength="500"></textarea>
+                        <div class="character-count">
+                            <span id="charCount">0</span>/500 characters
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn class="submit-btn cta-btn-primary"">
+                        <span>Contact Me</span>
+                    </button>
+                    
+                    <p class="privacy-notice">
+                        By submitting, you agree to our <a href="privacy-policy.html" target="_blank">Privacy Policy</a> and consent to being contacted about your real estate needs.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
         <section id="benefits" class="benefits fade-in-section">
             <div class="container">
                 <h2 class="section-title">The Benefits of a Direct Cash Sale</h2>
@@ -1293,7 +1391,7 @@
         <section id="why-us" class="benefits fade-in-section">
           <div class="container">
             <h2 class="section-title">Why Choose Jackson Investment Solutions?</h2>
-            <p class="section-subtitle">Jimmie is both a licensed Realtor®, and local investor who connects you to the best financing solutions - offering you unparalleled options for buying or selling.</p>
+            <p class="section-subtitle">Jimmie is a licensed Realtor®, and local investor who connects you to the best financing solutions - offering you unparalleled options for buying or selling.</p>
             <div class="benefits-grid">
               <div class="benefit"><div class="benefit-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 6c0 1.8.7 3.3 1.5 4.5 1 .8 1.5 2 1.5 3.5"/><path d="M9 18h6"/><path d="M10 22h4"/><path d="M10 18a2 2 0 1 1 4 0"/></svg>
@@ -1339,92 +1437,6 @@
                 </div>
             </div>
         </section>
-        
-        <section id="contact" class="lead-form-section">
-            <div class="container">
-                <div class="form-container">
-                    <h2 class="form-title">Contact Jimmie</h2>
-                    <p class="form-subtitle">Whether selling or buying, Jimmie will contact you within 24 hours.</p>
-                    <form id="leadForm" class="lead-form" name="property-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
-                        <input type="hidden" name="form-name" value="property-inquiry" />
-                        <p class="hidden">
-                            <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
-                        </p>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="fullName">Full Name *</label>
-                                <input type="text" id="fullName" name="fullName" required>
-                                <span class="error-message">This field is required.</span>
-                            </div>
-                            <div class="form-group">
-                                <label for="phoneNumber">Phone Number *</label>
-                                <input type="tel" id="phoneNumber" name="phoneNumber" required pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}">
-                                <span class="error-message">Please enter a valid 10-digit phone number.</span>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                             <div class="form-group">
-                                <label for="emailAddress">Email Address *</label>
-                                <input type="email" id="emailAddress" name="emailAddress" required>
-                                <span class="error-message">Please enter a valid email address.</span>
-                            </div>
-                            <div class="form-group">
-                                <label for="interestType">I'm interested in... *</label>
-                                <select id="interestType" name="interestType" required>
-                                    <option value="">Please select...</option>
-                                    <option value="sell-cash">Selling my home for cash</option>
-                                    <option value="sell-list">Listing my home with a Realtor®</option>
-                                    <option value="buy-financing">Getting financed to buy a home</option>
-                                    <option value="buy-agent">Working with an agent to buy a home</option>
-                                    <option value="both">Both buying and selling</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <span class="error-message">This field is required.</span>
-                            </div>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="propertyAddress">Property Address (if selling or specific buying interest)</label>
-                            <input type="text" id="propertyAddress" name="propertyAddress" placeholder="123 Main St, City, State">
-                            <span class="error-message">This field is required if selling.</span>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="propertySituation">What's your selling situation? (Optional, if selling)</label>
-                                <select id="propertySituation" name="propertySituation">
-                                    <option value="">Please select...</option>
-                                    <option value="foreclosure">Facing foreclosure</option>
-                                    <option value="inherited">Inherited property</option>
-                                    <option value="divorce">Going through divorce</option>
-                                    <option value="relocation">Need to relocate quickly</option>
-                                    <option value="financial">Financial hardship</option>
-                                    <option value="repairs">Property needs major repairs</option>
-                                    <option value="other">Other situation</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="sellTimeline">When do you need to sell? (Optional, if selling)</label>
-                                <select id="sellTimeline" name="sellTimeline">
-                                    <option value="">Select timeline...</option>
-                                    <option value="immediately">Immediately (within 2 weeks)</option>
-                                    <option value="30days">Within 30 days</option>
-                                    <option value="60days">Within 60 days</option>
-                                    <option value="90days">Within 90 days</option>
-                                    <option value="flexible">Timeline is flexible</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="additionalInfo">Additional Information (Tell us more about your needs)</label>
-                            <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="Tell us anything else about your situation or what you're looking for..."></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn contact-btn">Submit</button>
-                        <p class="text-center" style="margin-top: 1rem; font-size: 0.9em; color: var(--text-muted-on-dark);">
-                            By submitting, you agree to our <a href="privacy-policy.html" class="text-on-dark" style="text-decoration: underline;">Privacy Policy</a>.
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </section>
         <section id="compare-options" class="benefits fade-in-section">
           <div class="container">
             <!--<h2 class="section-title">Your Real Estate Options with Jimmie</h2>-->
@@ -1436,7 +1448,6 @@
     <a href="#contact" class="contact-btn" onclick="trackContactClick()">Contact Jimmie</a>
   </div>
 </div>
-
             <p class="section-subtitle">Whether speed, top dollar, or finding your dream home is your priority, we offer a comprehensive approach to meet your unique needs.</p>
             <div class="benefits-grid">
               <div class="benefit">
@@ -1477,7 +1488,7 @@
                             <input type="email" id="sellerGuideEmail" name="email" required placeholder="your.email@example.com">
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
-                        <button type="submit" class="submit-btn contact-btn">Download Seller's Guide</button>
+                        <button type="submit" class="submit-btn cta-btn-primary">Download Seller's Guide</button>
                     </form>
                 </div>
             </div>
@@ -1497,7 +1508,7 @@
                             <input type="email" id="buyerGuideEmail" name="email" required placeholder="your.email@example.com">
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
-                        <button type="submit" class="submit-btn contact-btn">Download Buyer's Guide</button>
+                        <button type="submit" class="submit-btn cta-btn-primary">Download Buyer's Guide</button>
                     </form>
                 </div>
             </div>
