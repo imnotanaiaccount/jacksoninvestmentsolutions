@@ -80,6 +80,7 @@
         .shiny-text {
   background: linear-gradient(to right, #007cf0, #00dfd8);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
   position: relative;
@@ -401,8 +402,8 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(1.30rem, 2vw, 2rem); /* Slightly adjusted font size */
-            font-weight: 700;
+            font-size: clamp(1.15rem, 2vw, 2rem); /* Slightly adjusted font size */
+            font-weight: 650;
             margin-top: calc(var(--space-md) * 1.5);
             margin-bottom: calc(var(--space-xl) * 1.5); /* Slightly more space */
             color: var(--text-light-gray);
@@ -1040,8 +1041,8 @@
                 font-weight: 800;
             }
             .hero-subtitle {
-                font-size: 1.30rem;
-                font-weight: 700;
+                font-size: 1.15rem;
+                font-weight: 650;
             }
             .section-title {
                 font-size: 2.2rem; /* Smaller titles on mobile */
@@ -1134,7 +1135,7 @@
                 </span>
                 <span id="guideModalTitleText">Thank You! Your Guide is Ready</span>
             </h2>
-            <p id="guideModalMessage">Your download of "The Grand Rapids Home Seller's Guide" should begin shortly. If it doesn't, <a href="/grand-rapids-seller-guide.pdf" target="_blank" class="cta-btn cta-primary" style="display: inline-flex; margin-top: 1rem;">Click to Download Now</a>.</p>
+            <p id="guideModalMessage">Your download will begin shortly. If it doesn't, <a href="/seller-guide.pdf" target="_blank" class="cta-btn cta-primary" style="display: inline-flex; margin-top: 1rem;">Click to Download Now</a>.</p>
             <button id="guideModalCloseBtn" class="message-modal-btn">Done</button>
         </div>
     </div>
@@ -1179,8 +1180,8 @@
                 <li><a href="#benefits">Selling Benefits</a></li>
                 <li><a href="#testimonials">Reviews</a></li>
                 <li><a href="#contact">Contact Us</a></li>
-                <li><a href="#lead-magnet">Seller Guide</a></li>
-                <li><a href="#lead-magnet-buyer">Buyer Guide</a></li>
+                <li><a href="#lead-magnet">Home Seller Guide</a></li>
+                <li><a href="#lead-magnet-buyer">Home Buyer Guide</a></li>
             </ul>
             <button id="hamburgerBtn" class="hamburger-btn" aria-label="Open navigation menu">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 28px; height: 28px;">
@@ -1353,7 +1354,7 @@
                     </button>
                     
                     <p class="privacy-notice">
-                        By submitting, you agree to our <a href="privacy-policy.html" target="_blank">Privacy Policy</a> & consent to being contacted.
+                        By submitting, you agree to our <a href="privacy-policy.html" target="_blank">Privacy Policy</a> and consent to being contacted about your real estate needs.
                     </p>
                 </form>
             </div>
@@ -1369,7 +1370,7 @@
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucude-hourglass"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414-4.414A2 2 0 0 0 7 6.172V2"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414 4.414a2 2 0 0 0 .586 1.414V22"/></svg>
                         </div>
                         <h3>Sell in Days, Not Months</h3>
-                        <p>Why wait for a buyer? We close on your timeline, often in as little as one week.</p>
+                        <p>We close on your timeline, often in as little as one week.</p>
                     </div>
                     <div class="benefit">
                         <div class="benefit-icon">
@@ -1567,408 +1568,11 @@
                 <p>&copy; 2025 Jackson Investment Solutions, LLC. All Rights Reserved. <a href="privacy-policy.html" style="text-decoration: underline; color: inherit;">Privacy Policy</a></p>
             </div>
             <div id="guideModal" class="message-modal">
-                <p id="guideModalMessage">Your download of "The Grand Rapids Home Seller's Guide" should begin shortly. If it doesn't, <a id="guideModalFallbackLink" href="/grand-rapids-seller-guide.pdf" target="_blank" class="cta-btn cta-primary" style="display: inline-flex; margin-top: 1rem;">Click to Download Now</a>.</p>
+                <p id="guideModalMessage">Your download of "The Home Seller's Guide" should begin shortly. If it doesn't, <a id="guideModalFallbackLink" href="/seller-guide.pdf" target="_blank" class="cta-btn cta-primary" style="display: inline-flex; margin-top: 1rem;">Click to Download Now</a>.</p>
                 <button id="guideModalCloseBtn" class="message-modal-btn">Done</button>
             </div>
         </div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // --- Smooth Scrolling ---
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    const mobileNav = document.getElementById('mobileNav');
-                    if (targetElement) {
-                        // Calculate offset for fixed header
-                        const headerOffset = document.querySelector('header').offsetHeight;
-                        const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                        const offsetPosition = elementPosition - headerOffset - 20; // Added 20px extra padding
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-
-                        // Close mobile menu on link click
-                        if(mobileNav.classList.contains('open')) {
-                            mobileNav.classList.remove('open');
-                        }
-                    }
-                });
-            });
-
-            // --- CTA Buttons to Form Dropdown Logic ---
-            const heroSellBtn = document.getElementById('heroSellBtn');
-            const heroFinanceBtn = document.getElementById('heroFinanceBtn');
-            const interestTypeDropdown = document.getElementById('interestType');
-
-            if (interestTypeDropdown) {
-                if (heroSellBtn) {
-                    heroSellBtn.addEventListener('click', () => {
-                        interestTypeDropdown.value = 'sell-cash'; // Default to cash offer
-                        interestTypeDropdown.dispatchEvent(new Event('change'));
-                    });
-                }
-                if (heroFinanceBtn) {
-                    heroFinanceBtn.addEventListener('click', () => {
-                        interestTypeDropdown.value = 'buy-financing';
-                        interestTypeDropdown.dispatchEvent(new Event('change'));
-                    });
-                }
-            }
-
-            // --- Mobile Navigation ---
-            const hamburgerBtn = document.getElementById('hamburgerBtn');
-            const closeBtn = document.getElementById('closeBtn');
-            const mobileNav = document.getElementById('mobileNav');
-
-            hamburgerBtn.addEventListener('click', () => {
-                mobileNav.classList.add('open');
-            });
-
-            closeBtn.addEventListener('click', () => {
-                mobileNav.classList.remove('open');
-            });
-
-            // --- Collapsible Floating Action Buttons (FAB) Logic ---
-            const fabContainer = document.querySelector('.fab-container');
-            const fabToggleBtn = document.querySelector('.fab-toggle-btn');
-            const fabActionBtns = document.querySelectorAll('.fab-action-btn');
-
-            const toggleFab = () => {
-                fabContainer.classList.toggle('expanded');
-                // Change icon based on expanded state
-                const icon = fabToggleBtn.querySelector('i');
-                if (fabContainer.classList.contains('expanded')) {
-                    icon.classList.remove('fa-comment-dots');
-                    icon.classList.add('fa-times'); // Change to 'x' icon when expanded
-                } else {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-comment-dots'); // Change back to comment icon
-                }
-            };
-
-            // Toggle FAB on click of the main 'contact' button
-            fabToggleBtn.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent document click from immediately closing
-                toggleFab();
-            });
-
-            // Collapse FAB when clicking anywhere else on the document
-            document.addEventListener('click', (event) => {
-                if (!fabContainer.contains(event.target) && fabContainer.classList.contains('expanded')) {
-                    toggleFab();
-                }
-            });
-
-            // Optional: Collapse FAB after an action button is clicked
-            fabActionBtns.forEach(button => {
-                button.addEventListener('click', () => {
-                    // You might want to perform a specific action here before closing,
-                    // like triggering a form or navigating.
-                    // For now, it just closes the FAB.
-                    toggleFab();
-                });
-            });
-
-
-            // --- Form Submission Modals & Validation ---
-            const mainLeadForm = document.getElementById('leadForm'); // Main property inquiry form
-            const sellerGuideForm = document.getElementById('sellerGuideForm');
-            const buyerGuideForm = document.getElementById('buyerGuideForm');
-            
-            const mainModal = document.getElementById('messageModal');
-            const mainModalTitleText = document.getElementById('modalTitleText');
-            const mainModalMessage = document.getElementById('modalMessage');
-            const mainModalIcon = document.getElementById('modalIcon');
-            const mainModalCloseBtn = document.getElementById('modalCloseBtn');
-
-            const guideModal = document.getElementById('guideModal');
-            const guideModalCloseBtn = document.getElementById('guideModalCloseBtn'); // Already defined in your code, just for context
-
-            const encode = (data) => {
-                return Object.keys(data)
-                    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-                    .join("&");
-            }
-
-            // Function to show a generic modal (used for main form)
-            function showMainModal(title, message, type) {
-                mainModalTitleText.textContent = title;
-                mainModalMessage.textContent = message;
-                mainModalIcon.className = 'modal-icon'; // Reset classes
-                if (type === 'success') {
-                    mainModalIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
-                    mainModalIcon.classList.add('success');
-                } else if (type === 'error') {
-                    mainModalIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-circle"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
-                    mainModalIcon.classList.add('error');
-                }
-                mainModal.classList.add('visible');
-            }
-
-            // Function to hide a generic modal (main form)
-            function hideMainModal() {
-                mainModal.classList.remove('visible');
-            }
-
-            // Function to show guide modal
-            function showGuideModal(pdfPath, guideTitle) {
-                const guideModalMessage = document.getElementById('guideModalMessage');
-                const guideModalFallbackLink = document.getElementById('guideModalFallbackLink');
-
-                if (guideModalMessage && guideModalFallbackLink) {
-                    // Update the text content of the paragraph, excluding the link
-                    guideModalMessage.firstChild.textContent = `Your download of "${guideTitle}" should begin shortly. If it doesn't, `;
-                    // Update the link's href
-                    guideModalFallbackLink.href = pdfPath;
-                }
-                guideModal.classList.add('visible');
-            }
-
-            // Function to hide guide modal
-            function hideGuideModal() {
-                guideModal.classList.remove('visible');
-            }
-
-            // Client-side validation function
-            function validateForm(form) {
-                let isValid = true;
-                const requiredFields = form.querySelectorAll('[required]');
-
-                requiredFields.forEach(field => {
-                    const formGroup = field.closest('.form-group');
-                    const errorMessage = formGroup.querySelector('.error-message');
-                    if (!field.value.trim()) {
-                        formGroup.classList.add('has-error');
-                        if (errorMessage) errorMessage.textContent = 'This field is required.';
-                        isValid = false;
-                    } else if (field.type === 'email' && !field.value.includes('@')) {
-                        formGroup.classList.add('has-error');
-                        if (errorMessage) errorMessage.textContent = 'Please enter a valid email address.';
-                        isValid = false;
-                    } else if (field.type === 'tel' && !/^\d{3}-?\d{3}-?\d{4}$/.test(field.value)) {
-                         formGroup.classList.add('has-error');
-                         if (errorMessage) errorMessage.textContent = 'Please enter a valid 10-digit phone number.';
-                         isValid = false;
-                    }
-                    else {
-                        formGroup.classList.remove('has-error');
-                    }
-                });
-
-                // Specific validation for propertyAddress if selling option is chosen
-                const interestTypeField = form.querySelector('#interestType');
-                const propertyAddressField = form.querySelector('#propertyAddress');
-                if (interestTypeField && propertyAddressField) {
-                    const selectedInterest = interestTypeField.value;
-                    const propertyAddressGroup = propertyAddressField.closest('.form-group');
-                    const propertyAddressError = propertyAddressGroup.querySelector('.error-message');
-
-                    if ((selectedInterest === 'sell-cash' || selectedInterest === 'sell-list' || selectedInterest === 'both') && !propertyAddressField.value.trim()) {
-                        propertyAddressGroup.classList.add('has-error');
-                        propertyAddressError.textContent = 'Property address is required for selling inquiries.';
-                        isValid = false;
-                    } else {
-                         propertyAddressGroup.classList.remove('has-error');
-                    }
-                }
-
-                return isValid;
-            }
-
-            // Reset validation states
-            function resetValidation(form) {
-                form.querySelectorAll('.form-group').forEach(group => {
-                    group.classList.remove('has-error');
-                });
-            }
-
-            // Add event listeners for input validation on blur
-            document.querySelectorAll('#leadForm [required], #sellerGuideForm [required], #buyerGuideForm [required]').forEach(input => {
-                input.addEventListener('blur', function() {
-                    const formGroup = this.closest('.form-group');
-                    const errorMessage = formGroup.querySelector('.error-message');
-                    if (!this.value.trim()) {
-                        formGroup.classList.add('has-error');
-                        if (errorMessage) errorMessage.textContent = 'This field is required.';
-                    } else if (this.type === 'email' && !this.value.includes('@')) {
-                        formGroup.classList.add('has-error');
-                        if (errorMessage) errorMessage.textContent = 'Please enter a valid email address.';
-                    } else if (this.type === 'tel' && !/^\d{3}-?\d{3}-?\d{4}$/.test(this.value)) {
-                         formGroup.classList.add('has-error');
-                         if (errorMessage) errorMessage.textContent = 'Please enter a valid 10-digit phone number.';
-                    }
-                    else {
-                        formGroup.classList.remove('has-error');
-                    }
-                });
-            });
-
-            // Specific validation trigger for #propertyAddress when #interestType changes
-            const interestTypeField = document.getElementById('interestType');
-            if (interestTypeField) {
-                interestTypeField.addEventListener('change', function() {
-                    const propertyAddressField = document.getElementById('propertyAddress');
-                    if (propertyAddressField) {
-                        const formGroup = propertyAddressField.closest('.form-group');
-                        const errorMessage = formGroup.querySelector('.error-message');
-                        const selectedInterest = this.value;
-
-                        if ((selectedInterest === 'sell-cash' || selectedInterest === 'sell-list' || selectedInterest === 'both') && !propertyAddressField.value.trim()) {
-                            formGroup.classList.add('has-error');
-                            errorMessage.textContent = 'Property address is required for selling inquiries.';
-                        } else {
-                            formGroup.classList.remove('has-error');
-                        }
-                    }
-                });
-            }
-
-
-            // Main Lead Form Submission
-            if (mainLeadForm) {
-                mainLeadForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    resetValidation(mainLeadForm); // Clear previous errors
-
-                    if (!validateForm(mainLeadForm)) {
-                        showMainModal('Oops!', 'Please correct the errors in the form before submitting.', 'error');
-                        return;
-                    }
-
-                    const submitButton = mainLeadForm.querySelector('button[type="submit"]');
-                    const formData = new FormData(mainLeadForm);
-                    const data = Object.fromEntries(formData.entries());
-
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Submitting...';
-
-                    fetch(mainLeadForm.action, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: encode({ "form-name": mainLeadForm.getAttribute('name'), ...data })
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            showMainModal('Thank You!', `We've received your information, ${data.fullName.split(' ')[0]}. Jimmie will get to work and contact you with your options within 24 hours.`, 'success');
-                            mainLeadForm.reset();
-                        } else {
-                            // Netlify might return a 400 for bad honeypot or other issues
-                            showMainModal('Error!', 'Something went wrong with your submission. Please try again or call us directly.', 'error');
-                        }
-                    })
-                    .catch((error) => {
-                        showMainModal('Error!', 'A network error occurred. Please check your connection or try again later.', 'error');
-                        console.error('Main form submission error:', error);
-                    })
-                    .finally(() => {
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Get My Personalized Solution';
-                    });
-                });
-            }
-
-            // Reusable function to handle guide form submissions
-            const handleGuideFormSubmit = (form, pdfPath, pdfName, guideTitle) => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    resetValidation(form);
-
-                    if (!validateForm(form)) {
-                        showMainModal('Oops!', 'Please correct the errors in the form before submitting.', 'error');
-                        return;
-                    }
-
-                    const submitButton = form.querySelector('button[type="submit"]');
-                    const originalButtonText = submitButton.textContent;
-                    const formData = new FormData(form);
-                    const data = Object.fromEntries(formData.entries());
-
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Downloading...';
-
-                    fetch(form.action, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: encode({ "form-name": form.getAttribute('name'), ...data })
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            // Trigger the PDF download
-                            const link = document.createElement('a');
-                            link.href = pdfDownloadPath;
-                            link.download = pdfName;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-
-                            showGuideModal(pdfPath, guideTitle);
-                            form.reset();
-                        } else {
-                            showMainModal('Download Error!', 'Could not initiate download. Please try again or contact us.', 'error');
-                        }
-                    })
-                    .catch((error) => {
-                        showMainModal('Network Error!', 'A network error occurred. Please check your connection or try again.', 'error');
-                        console.error('Guide form submission error:', error, 'Form:', form.id);
-                    })
-                    .finally(() => {
-                        submitButton.disabled = false;
-                        submitButton.textContent = originalButtonText;
-                    });
-                });
-            };
-
-            // Attach the handler to both guide forms
-            if (sellerGuideForm) {
-                handleGuideFormSubmit(sellerGuideForm, '/grand-rapids-seller-guide.pdf', 'Grand_Rapids_Home_Sellers_Guide.pdf', "The Grand Rapids Home Seller's Guide");
-            }
-            if (buyerGuideForm) {
-                handleGuideFormSubmit(buyerGuideForm, '/grand-rapids-buyer-guide.pdf', 'Grand_Rapids_Home_Buyers_Guide.pdf', "The Grand Rapids Home Buyer's Guide");
-            }
-
-
-            // Close buttons for modals
-            mainModalCloseBtn.addEventListener('click', hideMainModal);
-            guideModalCloseBtn.addEventListener('click', hideGuideModal);
-
-            // Close modals if clicked outside
-            mainModal.addEventListener('click', (e) => {
-                if (e.target === mainModal) {
-                    hideMainModal();
-                }
-            });
-            guideModal.addEventListener('click', (e) => {
-                if (e.target === guideModal) {
-                    hideGuideModal();
-                }
-            });
-
-
-            // --- Scroll Animations ---
-            const sections = document.querySelectorAll('.fade-in-section');
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                rootMargin: '0px',
-                threshold: 0.1 // Adjusted from 0.15 for earlier animation
-            });
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-        });
-    </script>
+    <script src="js/app.js"></script>
 </body>
 </html>
