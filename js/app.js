@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sellerGuideForm) {
         sellerGuideForm.addEventListener('submit', (e) => handleFormSubmit(e, sellerGuideForm, {
             loadingText: 'Downloading...',
-            onSuccess: () => showGuideModal('/grand-rapids-seller-guide.pdf', 'Grand_Rapids_Home_Sellers_Guide.pdf', "The Grand Rapids Home Seller's Guide"),
+            onSuccess: () => showGuideModal('downloads/PUBLISHED-The_Home_Sellers_Guide.pdf', 'Jackson_Investment_Solutions_Home_Sellers_Guide.pdf', "Jackson Investment Solutions - Home Seller's Guide"),
             trackingEvent: {
                 name: 'guide_download_submit',
                 category: 'lead_magnet',
@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (buyerGuideForm) {
         buyerGuideForm.addEventListener('submit', (e) => handleFormSubmit(e, buyerGuideForm, {
             loadingText: 'Downloading...',
-            onSuccess: () => showGuideModal('/grand-rapids-buyer-guide.pdf', 'Grand_Rapids_Home_Buyers_Guide.pdf', "The Grand Rapids Home Buyer's Guide"),
+            onSuccess: () => showGuideModal('downloads/PUBLISHED-The_Home_Buyers_Guide.pdf', 'Jackson_Investment_Solutions_Home_Buyers_Guide.pdf', "Jackson Investment Solutions - Home Buyer's Guide"),
             trackingEvent: {
                 name: 'guide_download_submit',
                 category: 'lead_magnet',
