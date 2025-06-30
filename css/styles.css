@@ -586,18 +586,27 @@
 
         /* --- Mobile-Specific Form Overrides --- */
         @media (max-width: 700px) {
+            /* Reset gaps for broader browser support */
             .lead-form,
             .form-row {
-                gap: 0.35rem; /* Even tighter gap for mobile */
+                gap: 0; /* Remove flex gap */
             }
 
             .form-row {
                 flex-direction: column;
             }
 
+            /* Vertical spacing via margin for compatibility */
+            .form-group {
+                margin-bottom: 0.6rem; /* Base vertical spacing between fields */
+            }
+            .form-group:last-child {
+                margin-bottom: 0; /* No extra space after the last group */
+            }
+
             /* Add extra space above the row following the full-width address field */
             .form-group.full-width {
-                margin-bottom: 1.6rem; /* Dedicated space after full-width address field */
+                margin-bottom: 1.8rem; /* Larger space after the address field */
             }
 
             .form-container {
