@@ -520,94 +520,26 @@
             display: flex;
             gap: 1rem; /* Consistent gap */
             flex-wrap: wrap;
+            gap: 1.5rem; /* Default gap for desktop */
         }
 
         .form-group {
-            flex: 1 1 220px;
-            min-width: 0;
+            flex: 1 1 220px; /* Grow, shrink, and base width */
+            min-width: 0; /* Prevent overflow */
             display: flex;
             flex-direction: column;
-            gap: 0.5rem; /* Consistent gap between label and input */
-            margin-bottom: 1rem; /* Consistent bottom margin */
+            gap: 0.5rem; /* Space between label and input */
+            position: relative; /* For error messages */
         }
 
         .form-group.full-width {
-            flex: 1 1 100%;
-            width: 100%;
+            flex-basis: 100%;
         }
 
-        .form-group.full-width + .form-group:not(.full-width) {
-            margin-top: 1.5rem; /* More space after full-width elements */
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            background: #f9fafb;
-            transition: border-color 0.2s;
-            box-sizing: border-box;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary-blue, #2563eb);
-            outline: none;
-        }
-
-        @media (max-width: 700px) {
-    .form-row {
-        flex-direction: column;
-        gap: 1rem; /* Consistent gap */
-    }
-    
-    .form-group {
-        margin-bottom: 1rem; /* Consistent bottom margin */
-    }
-    
-    .form-group.full-width + .form-group {
-        margin-top: 1.5rem; /* More space after full-width elements */
-    }
-    
-    .form-container {
-        padding: 1.5rem 1rem; /* Better padding for mobile */
-    }
-    
-    .form-group label {
-        font-size: 0.9rem; /* Slightly smaller font on mobile */
-        margin-bottom: 0.5rem; /* Consistent spacing */
-    }
-    
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-        padding: 1rem; /* Adjusted padding for mobile */
-        font-size: 1rem; /* Slightly larger font for better touch targets */
-        border-radius: 10px; /* Slightly smaller radius */
-    }
-    
-    .character-count {
-        margin-top: 0.5rem; /* Consistent spacing */
-        padding-right: 0.75rem;
-    }
-    
-    .privacy-notice {
-        margin-top: 1.25rem; /* Consistent spacing */
-    }
-}
-        /* --- General Form Styles --- */
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            position: relative; /* For error messages */
-            min-width: 0; /* Allows grid items to shrink below their content's minimum size */
-        }
-
+        /* --- Consolidated Form Element Styles --- */
         .form-group label {
             font-weight: 500;
             color: var(--text-muted-on-dark);
-            margin-bottom: var(--space-xs);
             display: block;
             font-size: 0.95rem;
         }
@@ -615,14 +547,15 @@
         .form-group input,
         .form-group select,
         .form-group textarea {
-            padding: 1.1rem; /* Slightly more padding */
+            padding: 1.1rem;
             border: 1px solid var(--border-dark-input);
             border-radius: 12px;
-            font-size: 1.05rem; /* Slightly larger font */
-            background-color: var(--text-dark); /* Darker input background */
+            font-size: 1.05rem;
+            background-color: var(--text-dark);
             color: var(--text-on-dark);
             width: 100%;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
         .form-group input:focus,
@@ -630,24 +563,47 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-blue);
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.45); /* Stronger focus shadow */
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.45);
         }
 
+        /* --- Form Validation Styles --- */
         .form-group .error-message {
             color: var(--error-red);
             font-size: 0.85rem;
             margin-top: 0.25rem;
             display: none; /* Hidden by default */
         }
+
         .form-group.has-error .error-message {
             display: block;
         }
+
         .form-group.has-error input,
         .form-group.has-error select,
         .form-group.has-error textarea {
             border-color: var(--error-red);
         }
 
+        /* --- Mobile-Specific Form Overrides --- */
+        @media (max-width: 700px) {
+            .lead-form,
+            .form-row {
+                gap: 0.5rem; /* Further reduced gap for mobile */
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            /* Add extra space above the row following the full-width address field */
+            .form-group.full-width + .form-row {
+                margin-top: 1.5rem; /* Creates a much larger separation */
+            }
+
+            .form-container {
+                padding: 1.5rem 1rem;
+            }
+        }
 
         .submit-btn {
             background-color: var(--primary-blue);
