@@ -199,7 +199,7 @@ header .container {
 
 /* --- Hero Section --- */
 .hero {
-    background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('../images/hero-bg.webp') no-repeat center center;
+    /*background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('../images/hero-bg.webp') no-repeat center center;*/
     background-size: cover;
     display: flex;
     align-items: center;
