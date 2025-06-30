@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Add fade-in section functionality
     const fadeElements = document.querySelectorAll('.fade-in-section');
-    
-    const observer = new IntersectionObserver((entries) => {
+
+        const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                entry.target.classList.add('is-visible'); // This is the fix
             }
         });
     }, {
