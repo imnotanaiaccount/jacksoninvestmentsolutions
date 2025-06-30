@@ -198,11 +198,10 @@
             <div class="form-container">
                 <h2 class="form-title">Contact Us</h2>
                 <p class="form-subtitle">Whether selling or buying, Jimmie will contact you within 24 hours.</p>
-                <form id="leadForm" class="lead-form" name="property-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field-contact">
-                    <input type="hidden" name="form-name" value="property-inquiry" />
-                    <p class="hidden">
-                        <label>Don't fill this out if you're human: <input name="bot-field-contact" /></label>
-                    </p>
+                <form id="leadForm" class="lead-form" name="property-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field-contact">
+                    <label class="hidden">
+                        Don't fill this out if you're human: <input name="bot-field-contact" />
+                    </label>
 
                     <div class="form-group">
                         <label for="fullName">Full Name <span class="required-asterisk">*</span></label>
@@ -353,7 +352,7 @@
                 <ul>
                     <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>Cash Offer: Quick close in as little as 7 days</li>
                     <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> Sell your home "As-Is" (no repairs, no cleaning)</li>
-                    <li><svg xmlns="http://www.w3.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> No agent commissions or fees (for cash offer)</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> No agent commissions or fees (for cash offer)</li>
                     <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>Realtor® Listing: Potentially higher sale price</li>
                     <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> Expert negotiation on your behalf (for listings)</li>
                 </ul>
@@ -376,11 +375,10 @@
                 <h2 class="section-title">Home Seller's Guide</h2>
                 <p class="section-subtitle">Realtor® & investor tips & proven strategies for a smooth, profitable sale.</p>
                 <div class="form-container">
-                    <form id="sellerGuideForm" class="lead-magnet-form" name="seller-guide-download" method="POST" data-netlify="true" data-netlify-honeypot="bot-field-seller">
-                        <input type="hidden" name="form-name" value="seller-guide-download" />
-                        <p class="hidden">
-                            <label>Don’t fill this out if you’re human: <input name="bot-field-seller" /></label>
-                        </p>
+                    <form id="sellerGuideForm" class="lead-magnet-form" name="seller-guide-download" method="POST" data-netlify="true" netlify-honeypot="bot-field-seller">
+                        <label class="hidden">
+                            Don’t fill this out if you’re human: <input name="bot-field-seller" />
+                        </label>
                         <div class="form-group full-width">
                             <label for="sellerGuideEmail">Your Email Address *</label>
                             <input type="email" id="sellerGuideEmail" name="email" required placeholder="your.email@example.com" aria-required="true">
@@ -397,11 +395,10 @@
                 <h2 class="section-title">Home Buyer's Guide</h2>
                 <p class="section-subtitle">Realtor® & investor tips & proven strategies for a smooth, profitable purchase.</p>
                 <div class="form-container">
-                    <form id="buyerGuideForm" class="lead-magnet-form" name="buyer-guide-download" method="POST" data-netlify="true" data-netlify-honeypot="bot-field-buyer">
-                        <input type="hidden" name="form-name" value="buyer-guide-download" />
-                        <p class="hidden">
-                            <label>Don’t fill this out if you’re human: <input name="bot-field-buyer" /></label>
-                        </p>
+                    <form id="buyerGuideForm" class="lead-magnet-form" name="buyer-guide-download" method="POST" data-netlify="true" netlify-honeypot="bot-field-buyer">
+                        <label class="hidden">
+                            Don’t fill this out if you’re human: <input name="bot-field-buyer" />
+                        </label>
                         <div class="form-group full-width">
                             <label for="buyerGuideEmail">Your Email Address *</label>
                             <input type="email" id="buyerGuideEmail" name="email" required placeholder="your.email@example.com" aria-required="true">
