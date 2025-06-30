@@ -588,7 +588,7 @@
         @media (max-width: 700px) {
             .lead-form,
             .form-row {
-                gap: 0.5rem; /* Further reduced gap for mobile */
+                gap: 0.35rem; /* Even tighter gap for mobile */
             }
 
             .form-row {
@@ -596,8 +596,8 @@
             }
 
             /* Add extra space above the row following the full-width address field */
-            .form-group.full-width + .form-row {
-                margin-top: 1.5rem; /* Creates a much larger separation */
+            .form-group.full-width {
+                margin-bottom: 1.6rem; /* Dedicated space after full-width address field */
             }
 
             .form-container {
