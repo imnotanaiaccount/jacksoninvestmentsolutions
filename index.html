@@ -6,6 +6,7 @@
     <title>Jackson Investment Solutions - Buy & Sell Homes in West Michigan</title>
     <meta name="description" content="Looking to buy or sell a home in Michigan? Jackson Investment Solutions offers cash offers for sellers, expert Realtor® listings, and personalized home financing solutions for buyers.">
     <link rel="icon" type="image/png" href="images/favico.png">
+    <!-- Content Security Policy (CSP) to enhance security -->
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self'; 
         script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; 
@@ -14,7 +15,9 @@
         img-src 'self' data:; 
         connect-src 'self' https://*.google-analytics.com https://*.clarity.ms;
         frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/;">
-
+    
+    <!-- Added Subresource Integrity (SRI) for security -->
+    <!-- Using a specific version of Tailwind is better for security and stability. The SRI hash ensures the file is not tampered with. -->
     <script src="https://cdn.tailwindcss.com/3.4.3" integrity="sha384-e6A5LS1qad2SPwIe3U6l7yJgI+1x3L3w22Sg4Ekz4G2fD7I1w+JajDBrCBIyT27j" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,7 +139,7 @@
                 </div>
             </div>
         </section>
-
+        
         <section id="financing-options" class="benefits fade-in-section">
             <div class="container">
                 <h2 class="section-title">Seamless Home Financing for Buyers</h2>
@@ -197,7 +200,7 @@
                     <p class="hidden">
                         <label>Don't fill this out if you're human: <input name="bot-field" /></label>
                     </p>
-
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label for="fullName">Full Name <span class="required-asterisk">*</span></label>
@@ -210,7 +213,7 @@
                             <span class="error-message">Please enter a valid 10-digit phone number.</span>
                         </div>
                     </div>
-
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label for="emailAddress">Email Address <span class="required-asterisk">*</span></label>
@@ -231,16 +234,16 @@
                             <span class="error-message">Please select your area of interest.</span>
                         </div>
                     </div>
-
+                    
                     <div class="form-group full-width">
                         <label for="propertyAddress">Property Address</label>
                         <input type="text" id="propertyAddress" name="propertyAddress" placeholder="123 Main St, City, State, ZIP" autocomplete="street-address">
                         <span class="error-message">Please provide the property address.</span>
                     </div>
-
+                    
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="propertySituation">What's your selling situation?</label>
+                            <label for="propertySituation">What's your selling situation? (Optional)</label>
                             <select id="propertySituation" name="propertySituation">
                                 <option value="">Please select...</option>
                                 <option value="foreclosure">⚠️ Facing foreclosure</option>
@@ -253,7 +256,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="sellTimeline">When do you need to sell?</label>
+                            <label for="sellTimeline">When do you need to sell? (Optional)</label>
                             <select id="sellTimeline" name="sellTimeline">
                                 <option value="">Select timeline...</option>
                                 <option value="immediately">🚨 Immediately (within 2 weeks)</option>
@@ -264,7 +267,7 @@
                             </select>
                         </div>
                     </div>
-
+                    
                     <div class="form-group full-width">
                         <label for="additionalInfo">Additional Information</label>
                         <textarea id="additionalInfo" name="additionalInfo" rows="4" placeholder="Tell us more about your needs, timeline, or any specific requirements..." maxlength="500"></textarea>
@@ -272,13 +275,14 @@
                             <span id="charCount">0</span>/500 characters
                         </div>
                     </div>
-
+                    
+                    <!-- Netlify will automatically insert the reCAPTCHA widget here -->
                     <div data-netlify-recaptcha="true"></div>
-
+                    
                     <button type="submit" class="submit-btn cta-btn-primary">
                         <span>Contact Me</span>
                     </button>
-
+                    
                     <p class="privacy-notice">
                         By submitting, you agree to our <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and consent to being contacted about your real estate needs.
                     </p>
@@ -340,6 +344,7 @@
         </section>
         <section id="compare-options" class="benefits fade-in-section">
           <div class="container">
+            <!--<h2 class="section-title">Your Real Estate Options with Jimmie</h2>-->
             <div class="cta-profile">
   <div class="glass-card">
     <img src="images/jimmie.jpg" alt="Jimmie - Professional Realtor" class="realtor-photo" />
@@ -388,6 +393,7 @@
                             <input type="email" id="sellerGuideEmail" name="email" required placeholder="your.email@example.com" aria-required="true">
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
+                        <!-- Netlify will automatically insert the reCAPTCHA widget here -->
                         <div data-netlify-recaptcha="true"></div>
                         <button type="submit" class="submit-btn cta-btn-primary">Download Seller's Guide</button>
                     </form>
@@ -409,6 +415,7 @@
                             <input type="email" id="buyerGuideEmail" name="email" required placeholder="your.email@example.com" aria-required="true">
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
+                        <!-- Netlify will automatically insert the reCAPTCHA widget here -->
                         <div data-netlify-recaptcha="true"></div>
                         <button type="submit" class="submit-btn cta-btn-primary">Download Buyer's Guide</button>
                     </form>
@@ -487,5 +494,50 @@
         </div>
     </footer>
     <script src="js/app.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hide all Netlify reCAPTCHA fields. Netlify's scripts will still handle them.
+    document.querySelectorAll('[data-netlify-recaptcha]').forEach(el => {
+        el.style.display = 'none';
+    });
+
+    // The main contact form validation is handled in js/app.js.
+    // The previous inline script for it was broken and has been removed.
+
+    // --- Guide Download Forms Validation ---
+    function setupGuideForm(formId) {
+        const form = document.getElementById(formId);
+        if (!form) return;
+
+        // The reCAPTCHA is handled by Netlify automatically.
+        // We only need to add client-side validation for the email field.
+
+        const emailInput = form.querySelector('input[type="email"]');
+        if (!emailInput) return;
+
+        form.addEventListener('submit', function(e) {
+            const email = emailInput.value.trim();
+            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            const errorMessage = emailInput.nextElementSibling;
+
+            if (!valid) {
+                // Prevent form submission if email is invalid
+                e.preventDefault();
+                // Show error state
+                if (errorMessage && errorMessage.classList.contains('error-message')) {
+                    errorMessage.style.display = 'block';
+                }
+                emailInput.focus();
+            } else if (errorMessage && errorMessage.classList.contains('error-message')) {
+                // Hide error state if email is valid
+                errorMessage.style.display = 'none';
+            }
+        });
+    }
+
+    setupGuideForm('sellerGuideForm');
+    setupGuideForm('buyerGuideForm');
+});
+</script>
 </body>
 </html>
