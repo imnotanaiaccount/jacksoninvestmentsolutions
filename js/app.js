@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fadeElements.forEach(element => observer.observe(element));
 
     // --- Form Encoding Function ---
+    // (This function is no longer directly used for form submissions, but kept as it's harmless)
     const encode = (data) => {
         return Object.keys(data)
             .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
@@ -77,6 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const guideModalCloseBtn = document.getElementById('guideModalCloseBtn');
 
     // --- Modal Display Functions ---
+    // NOTE: These modals will no longer be triggered directly by JavaScript for successful Netlify form submissions.
+    // Netlify's native form handling typically redirects to a success page.
+    // If you want to use these modals for success, you would need to configure Netlify to redirect
+    // back to the current page with a URL parameter (e.g., ?form=contact&success=true)
+    // and then add logic to check that parameter on DOMContentLoaded to show the modal.
     function showMainModal(type, title, message) {
         modalTitleText.textContent = title;
         modalMessage.textContent = message;
@@ -126,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close main modal when clicking outside of it
     mainModal.addEventListener('click', (e) => e.target === mainModal && hideMainModal());
-    
+
     // Close guide modal when clicking outside of it
     guideModal.addEventListener('click', (e) => e.target === guideModal && hideGuideModal());
 
@@ -165,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fieldIsValid = false;
             errorMessage = 'Please enter your first and last name.';
         }
-        
+
         // Conditional validation for propertyAddress
         if (field.id === 'propertyAddress') {
             const interestTypeField = field.form.querySelector('#interestType');
@@ -204,83 +210,71 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Generic Form Submission Handler ---
-    async function handleFormSubmit(e, form, options) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
+    // --- Attach Submit Handlers to Netlify Forms (Native Submission) ---
+    // This section replaces the custom fetch-based submission.
+    // Netlify's built-in reCAPTCHA and form processing relies on native browser submission.
+    document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            // Validate the form client-side first
+            const isFormValid = validateForm(this); // 'this' refers to the current form being submitted
 
-        // Validate the entire form on submission
-        if (!validateForm(form)) {
-            showMainModal('error', 'Oops!', 'Please correct the errors marked in the form before submitting.');
-            return; // Stop submission if validation fails
-        }
-        
-        const submitButton = form.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.textContent;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+            if (!isFormValid) {
+                e.preventDefault(); // ONLY prevent native submission if client-side validation fails
+                showMainModal('error', 'Oops!', 'Please correct the errors marked in the form before submitting.');
+                return; // Stop further execution
+            }
 
-        submitButton.disabled = true;
-        submitButton.textContent = options.loadingText || 'Submitting...';
+            // If validation passes, DO NOT call e.preventDefault().
+            // Allow the form to submit natively so Netlify can intercept it,
+            // process the honeypot, and validate the reCAPTCHA.
 
-        try {
-            const response = await fetch(form.action, {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: encode({ "form-name": form.getAttribute('name'), ...data })
-            });
+            const submitButton = this.querySelector('button[type="submit"]');
+            if (submitButton) {
+                // Store original text before disabling
+                submitButton.dataset.originalText = submitButton.textContent;
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...'; // Or 'Downloading...' for guides
+            }
 
-            if (!response.ok) throw new Error(`Server responded with status: ${response.status}`);
-            
-            // Call success callback and tracking event
-            options.onSuccess(data);
+            // After Netlify processes the form, it will typically redirect the user
+            // to the form's 'action' or 'data-netlify-redirect' URL.
+            // Your custom success modals (showMainModal, showGuideModal) will NOT be
+            // triggered by this script directly upon successful submission from this page.
+            // To show a custom modal on success, you would need to:
+            // 1. Configure Netlify to redirect to a specific page (e.g., /thank-you.html)
+            // 2. Or, redirect back to the current page with a URL parameter (e.g., ?form=yourformname&status=success)
+            // 3. Then, have JavaScript on that page (or on this page, detecting URL params)
+            //    parse the URL and display the appropriate modal.
 
-            // Reset form and validation state
-            form.reset();
-            resetValidation(form);
+            // For the guide forms, you can still trigger the download immediately,
+            // as the file download itself doesn't prevent Netlify's form processing.
+            if (this.id === 'sellerGuideForm') {
+                showGuideModal('downloads/PUBLISHED-The_Home_Sellers_Guide.pdf', 'Jackson_Investment_Solutions_Home_Sellers_Guide.pdf', "Jackson Investment Solutions - Home Seller's Guide");
+            } else if (this.id === 'buyerGuideForm') {
+                showGuideModal('downloads/PUBLISHED-The_Home_Buyers_Guide.pdf', 'Jackson_Investment_Solutions_Home_Buyers_Guide.pdf', "Jackson Investment Solutions - Home Buyer's Guide");
+            }
 
-            // Reset character count if applicable
-            const charCount = form.querySelector('#charCount');
+            // IMPORTANT: Reset the form and validation after Native submission for better UX
+            // (even though a redirect might occur).
+            // The button will be re-enabled on the next page load or if redirect doesn't happen for some reason.
+            this.reset();
+            resetValidation(this);
+            const charCount = this.querySelector('#charCount');
             if (charCount) charCount.textContent = '0';
+        });
 
-        } catch (error) {
-            console.error('Form submission error:', error);
-            showMainModal('error', 'Submission Error!', 'Something went wrong. Please check your connection or contact us directly.');
-        } finally {
-            // Re-enable the button and restore its text
-            submitButton.disabled = false;
-            submitButton.textContent = originalButtonText;
-        }
-    }
+        // Re-enable button if page is navigated back to (e.g., browser back button)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) { // Check if page was retrieved from cache
+                const submitButton = form.querySelector('button[type="submit"]');
+                if (submitButton && submitButton.disabled && submitButton.dataset.originalText) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = submitButton.dataset.originalText;
+                }
+            }
+        });
+    });
 
-    // --- Attach Submit Handlers to Forms ---
-    const mainLeadForm = document.getElementById('leadForm');
-    const sellerGuideForm = document.getElementById('sellerGuideForm');
-    const buyerGuideForm = document.getElementById('buyerGuideForm');
-
-    if (mainLeadForm) {
-        mainLeadForm.addEventListener('submit', (e) => handleFormSubmit(e, mainLeadForm, {
-            loadingText: 'Submitting...',
-            onSuccess: (data) => {
-                const firstName = data.fullName.split(' ')[0];
-                showMainModal('success', 'Thank You!', `We've received your information, ${firstName}. Jimmie will get to work and contact you with your options within 24 hours.`);
-            },
-        }));
-    }
-
-    if (sellerGuideForm) {
-        sellerGuideForm.addEventListener('submit', (e) => handleFormSubmit(e, sellerGuideForm, {
-            loadingText: 'Downloading...',
-            onSuccess: () => showGuideModal('downloads/PUBLISHED-The_Home_Sellers_Guide.pdf', 'Jackson_Investment_Solutions_Home_Sellers_Guide.pdf', "Jackson Investment Solutions - Home Seller's Guide"),
-        }));
-    }
-
-    if (buyerGuideForm) {
-        buyerGuideForm.addEventListener('submit', (e) => handleFormSubmit(e, buyerGuideForm, {
-            loadingText: 'Downloading...',
-            onSuccess: () => showGuideModal('downloads/PUBLISHED-The_Home_Buyers_Guide.pdf', 'Jackson_Investment_Solutions_Home_Buyers_Guide.pdf', "Jackson Investment Solutions - Home Buyer's Guide"),
-        }));
-    }
 
     // --- Attach Validation to Blur Event ---
     document.querySelectorAll('#leadForm input, #leadForm select, #sellerGuideForm input, #buyerGuideForm input').forEach(input => {
