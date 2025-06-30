@@ -23,9 +23,10 @@
     <link rel="stylesheet" href="css/styles.css">
     <style>
         /* Force-hide Netlify's reCAPTCHA element. It will still function. */
-        [data-netlify-recaptcha] {
+        /* [data-netlify-recaptcha] {
             display: none !important;
-        }
+        } */
+        /* Removed the above rule to allow reCAPTCHA to be visible */
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA4_ID"></script>
     <script>
@@ -198,7 +199,7 @@
             <div class="form-container">
                 <h2 class="form-title">Contact Us</h2>
                 <p class="form-subtitle">Whether selling or buying, Jimmie will contact you within 24 hours.</p>
-                <form id="leadForm" class="lead-form" name="property-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field-contact">
+                <form id="leadForm" class="lead-form" name="property-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field-contact" data-netlify-recaptcha="true">
                     <label class="hidden">
                         Don't fill this out if you're human: <input name="bot-field-contact" />
                     </label>
@@ -271,6 +272,8 @@
                             <span id="charCount">0</span>/500 characters
                         </div>
                     </div>
+
+                    <div data-netlify-recaptcha="true" class="form-group full-width" style="margin-top: 20px; text-align: center;"></div>
 
                     <button type="submit" class="submit-btn cta-btn-primary">
                         <span>Contact Me</span>
@@ -375,7 +378,7 @@
                 <h2 class="section-title">Home Seller's Guide</h2>
                 <p class="section-subtitle">Realtor® & investor tips & proven strategies for a smooth, profitable sale.</p>
                 <div class="form-container">
-                    <form id="sellerGuideForm" class="lead-magnet-form" name="seller-guide-download" method="POST" data-netlify="true" netlify-honeypot="bot-field-seller">
+                    <form id="sellerGuideForm" class="lead-magnet-form" name="seller-guide-download" method="POST" data-netlify="true" netlify-honeypot="bot-field-seller" data-netlify-recaptcha="true">
                         <label class="hidden">
                             Don’t fill this out if you’re human: <input name="bot-field-seller" />
                         </label>
@@ -384,6 +387,8 @@
                             <input type="email" id="sellerGuideEmail" name="email" required placeholder="your.email@example.com" aria-required="true">
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
+
+                        <div data-netlify-recaptcha="true" style="margin-top: 15px; margin-bottom: 15px;"></div>
 
                         <button type="submit" class="submit-btn cta-btn-primary">Download Seller's Guide</button>
                     </form>
@@ -395,7 +400,7 @@
                 <h2 class="section-title">Home Buyer's Guide</h2>
                 <p class="section-subtitle">Realtor® & investor tips & proven strategies for a smooth, profitable purchase.</p>
                 <div class="form-container">
-                    <form id="buyerGuideForm" class="lead-magnet-form" name="buyer-guide-download" method="POST" data-netlify="true" netlify-honeypot="bot-field-buyer">
+                    <form id="buyerGuideForm" class="lead-magnet-form" name="buyer-guide-download" method="POST" data-netlify="true" netlify-honeypot="bot-field-buyer" data-netlify-recaptcha="true">
                         <label class="hidden">
                             Don’t fill this out if you’re human: <input name="bot-field-buyer" />
                         </label>
@@ -404,6 +409,8 @@
                             <input type="email" id="buyerGuideEmail" name="email" required placeholder="your.email@example.com" aria-required="true">
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
+
+                        <div data-netlify-recaptcha="true" style="margin-top: 15px; margin-bottom: 15px;"></div>
 
                         <button type="submit" class="submit-btn cta-btn-primary">Download Buyer's Guide</button>
                     </form>
