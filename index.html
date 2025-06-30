@@ -497,45 +497,5 @@
         </div>
     </footer>
     <script src="js/app.js"></script>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // The main contact form validation is handled in js/app.js.
-    // The previous inline script for it was broken and has been removed.
-
-    // --- Guide Download Forms Validation ---
-    function setupGuideForm(formId) {
-        const form = document.getElementById(formId);
-        if (!form) return;
-
-        // The reCAPTCHA is handled by Netlify automatically.
-        // We only need to add client-side validation for the email field.
-
-        const emailInput = form.querySelector('input[type="email"]');
-        if (!emailInput) return;
-
-        form.addEventListener('submit', function(e) {
-            const email = emailInput.value.trim();
-            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            const errorMessage = emailInput.nextElementSibling;
-
-            if (!valid) {
-                // Prevent form submission if email is invalid
-                e.preventDefault();
-                // Show error state
-                if (errorMessage && errorMessage.classList.contains('error-message')) {
-                    errorMessage.style.display = 'block';
-                }
-                emailInput.focus();
-            } else if (errorMessage && errorMessage.classList.contains('error-message')) {
-                // Hide error state if email is valid
-                errorMessage.style.display = 'none';
-            }
-        });
-    }
-
-    setupGuideForm('sellerGuideForm');
-    setupGuideForm('buyerGuideForm');
-});
-</script> 
 </body>
 </html>
