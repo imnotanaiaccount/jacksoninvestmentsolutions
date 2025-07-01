@@ -7,6 +7,11 @@
   NPM_VERSION = "9"
 
 [[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+
+[[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
